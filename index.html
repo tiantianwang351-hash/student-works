@@ -2,48 +2,232 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2025年新闻课堂作品展</title>
     <style>
-        :root { --primary-color: #ff7eb3; --secondary-color: #64d1ff; --bg-color: #fff9e6; }
-        body { font-family: "Microsoft YaHei", sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; }
-        #home-page { padding: 40px 20px; text-align: center; }
-        .main-title { font-size: 3em; color: #ff6b6b; text-shadow: 2px 2px 0 #fff; margin-bottom: 50px; }
-        .themes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .theme-card { 
-            background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); 
-            border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 20px; 
-            padding: 30px; cursor: pointer; transition: all 0.3s;
-            display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555;
+        :root {
+            --primary: #ff7eb3;
+            --primary-dark: #ff4d94;
+            --secondary: #64d1ff;
+            --bg-gradient: linear-gradient(135deg, #fff9e6 0%, #f0f4ff 100%);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text-main: #2d3436;
+            --text-light: #636e72;
         }
-        .theme-card:hover { transform: translateY(-5px); background: var(--primary-color); color: white; }
 
-        #detail-page { display: none; padding: 40px; }
-        .back-btn { background: var(--secondary-color); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; margin-bottom: 20px; }
-        .detail-title { text-align: center; color: #444; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 3px dashed var(--secondary-color); }
-        
-        .works-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; max-width: 1400px; margin: 0 auto; }
-        .work-box { 
-            background: white; border-radius: 20px; padding: 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            display: flex; flex-direction: column; align-items: center;
-            transition: transform 0.3s; border: 2px solid transparent;
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
-        .work-box:hover { transform: scale(1.02); border-color: var(--primary-color); }
 
-        .img-container { 
-            width: 100%; height: 220px; 
-            display: flex; align-items: center; justify-content: center;
-            background: #f9f9f9; border-radius: 10px; overflow: hidden; margin-bottom: 15px;
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
 
-        .author-info { font-size: 0.9em; color: #666; text-align: center; line-height: 1.5; height: 3em; }
-        .praise-text { font-size: 0.85em; color: #e67e22; background: #fffcf0; padding: 8px; border-radius: 8px; margin-top: 10px; width: 100%; box-sizing: border-box; }
+        /* 首页布局 */
+        #home-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
 
-        .modal { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-        .modal img { max-width: 95%; max-height: 95%; border: 3px solid white; }
+        .main-title {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #ff7eb3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 50px;
+            font-weight: 800;
+        }
 
-        @media (max-width: 1100px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .theme-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 24px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .theme-card.active {
+            color: #ff6b6b;
+            border: 2px solid #ff7eb3;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 15px 45px rgba(255, 126, 179, 0.3);
+        }
+
+        /* 详情页布局 */
+        #detail-page {
+            display: none;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .nav-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-btn {
+            background: white;
+            color: var(--text-main);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            margin-right: 20px;
+            white-space: nowrap;
+        }
+
+        .back-btn:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .detail-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 2rem;
+            color: var(--text-main);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        /* 作品网格 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .work-box {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .work-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 220px;
+            background: #fdfdfd;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 完整显示学生手绘作品内容 */
+            cursor: zoom-in;
+            transition: transform 0.5s;
+            background: #f9f9f9;
+        }
+
+        .author-info {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .author-info b {
+            display: block;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .author-info span {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .praise-text {
+            font-size: 0.9rem;
+            color: #555;
+            background: #fffcf0;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 4px solid #f1c40f;
+            flex-grow: 1;
+        }
+
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+
+        .modal img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.2rem; }
+            .nav-header { flex-direction: column; gap: 15px; }
+            .detail-title { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
@@ -54,63 +238,104 @@
 </div>
 
 <div id="detail-page">
-    <button class="back-btn" onclick="showHome()">← 返回首页</button>
-    <h2 id="current-theme-title" class="detail-title"></h2>
+    <div class="nav-header">
+        <button class="back-btn" onclick="showHome()">← 返回首页</button>
+        <h2 id="current-theme-title" class="detail-title"></h2>
+    </div>
     <div class="works-grid" id="works-container"></div>
 </div>
 
-<div id="imageModal" class="modal" onclick="this.style.display='none'"><img id="modalImg" src=""></div>
+<div id="imageModal" class="modal" onclick="this.style.display='none'">
+    <img id="modalImg" src="">
+</div>
 
 <script>
-    const theme01Data = [
-        { name: "奚嘉怡", school: "上师大附中金山前京中学", file: "上海师范大学附属金山前京中学 奚嘉怡.jpg", praise: "色彩鲜艳，鲸鱼形象生动，排版逻辑满分！" },
-        { name: "方毓馨", school: "上师大附中金山前京中学", file: "上海师范大学附属金山前京中学 方毓馨.jpg", praise: "对AI原理的拆解细致，展现了严谨的科学态度！" },
-        { name: "付玥", school: "闵行区君莲学校", file: "junlian01.jpg.jpg", praise: "笔记工整，彩色装饰充满童趣，总结感悟非常深刻！" },
-        { name: "谭思萌", school: "闵行区君莲学校", file: "junlian02.jpg.jpg", praise: "重点突出，对DeepSeek的思考很有深度，观察力强！" },
-        { name: "张梵馨", school: "虹口实验学校", file: "上海市虹口实验学校 张梵馨.jpg", praise: "学习单完成出色，思维导图清晰，习惯非常好！" },
-        { name: "顾琳菲", school: "金桥镇中心小学", file: "上海市浦东新区金桥镇中心小学 顾琳菲.jpg", praise: "用色区分重点，态度认真，收获写得非常详尽！" },
-        { name: "张李琪", school: "嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 张李琪.jpg", praise: "时政随笔有见地，展现了中学生敏锐的观察力！" },
-        { name: "宣璟怡", school: "建平临港小学", file: "上海市浦东新区建平临港小学 宣璟怡.jpg", praise: "文章精彩，字里行间充满了对国产科技崛起的自豪！" },
-        { name: "陈沁瑜", school: "上海市西林中学", file: "上海市西林中学 陈沁瑜.jpg", praise: "条理清晰，文字功底扎实，对AI普及的思考很到位！" },
-        { name: "毛诗雯", school: "上海市西林中学", file: "上海市西林中学 毛诗雯.png", praise: "感悟深刻，展现了对AI未来的理性期待与辩证思考！" },
-        { name: "蒋玉婷", school: "上海市蔡路中学", file: "上海市蔡路中学 蒋玉婷.png", praise: "观点独到，提醒我们要保持判断力，非常有前瞻性！" },
-        { name: "高俊宸", school: "上海市黄楼中学", file: "上海市黄楼中学 高俊宸.jpg", praise: "笔记逻辑性极强，把技术优势分析得头头是道！" },
-        { name: "尹美茜", school: "上海市松江一中", file: "上海市松江一中 尹美茜.png", praise: "文字优美，将科技突破与乡土情怀结合，立意极高！" },
-        { name: "夏姝砚", school: "上海市松江一中", file: "上海市松江一中 夏姝砚.png", praise: "辩证看待技术，逻辑严密，展现了卓越的学术潜质！" }
-    ];
+    const allThemesData = {
+        1: {
+            title: "主题01 DeepSeek横空出世，意味着什么？",
+            works: [
+                { name: "奚嘉怡", school: "上师大附中金山前京中学", file: "上海师范大学附属金山前京中学 奚嘉怡.jpg", praise: "色彩鲜艳，鲸鱼形象生动，排版逻辑满分！" },
+                { name: "方毓馨", school: "上师大附中金山前京中学", file: "上海师范大学附属金山前京中学 方毓馨.jpg", praise: "对AI原理的拆解细致，展现了严谨的科学态度！" },
+                { name: "付玥", school: "闵行区君莲学校", file: "junlian01.jpg.jpg", praise: "笔记工整，彩色装饰充满童趣，总结感悟非常深刻！" },
+                { name: "谭思萌", school: "闵行区君莲学校", file: "junlian02.jpg.jpg", praise: "重点突出，对DeepSeek的思考很有深度，观察力强！" },
+                { name: "张梵馨", school: "虹口实验学校", file: "上海市虹口实验学校 张梵馨.jpg", praise: "学习单完成出色，思维导图清晰，习惯非常好！" },
+                { name: "顾琳菲", school: "金桥镇中心小学", file: "上海市浦东新区金桥镇中心小学 顾琳菲.jpg", praise: "用色区分重点，态度认真，收获写得非常详尽！" },
+                { name: "张李琪", school: "嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 张李琪.jpg", praise: "时政随笔有见地，展现了中学生敏锐的观察力！" },
+                { name: "宣璟怡", school: "建平临港小学", file: "上海市浦东新区建平临港小学 宣璟怡.jpg", praise: "文章精彩，字里行间充满了对国产科技崛起的自豪！" },
+                { name: "陈沁瑜", school: "上海市西林中学", file: "上海市西林中学 陈沁瑜.jpg", praise: "条理清晰，文字功底扎实，对AI普及的思考很到位！" },
+                { name: "毛诗雯", school: "上海市西林中学", file: "上海市西林中学 毛诗雯.png", praise: "感悟深刻，展现了对AI未来的理性期待与辩证思考！" },
+                { name: "蒋玉婷", school: "上海市蔡路中学", file: "上海市蔡路中学 蒋玉婷.png", praise: "观点独到，提醒我们要保持判断力，非常有前瞻性！" },
+                { name: "高俊宸", school: "上海市黄楼中学", file: "上海市黄楼中学 高俊宸.jpg", praise: "笔记逻辑性极强，把技术优势分析得头头是道！" },
+                { name: "尹美茜", school: "上海市松江一中", file: "上海市松江一中 尹美茜.png", praise: "文字优美，将科技突破与乡土情怀结合，立意极高！" },
+                { name: "夏姝砚", school: "上海市松江一中", file: "上海市松江一中 夏姝砚.png", praise: "辩证看待技术，逻辑严密，展现了卓越的学术潜质！" }
+            ]
+        },
+        2: {
+            title: "主题02 说说大闹春节档的《哪吒2》",
+            works: [
+                { name: "高昱哲", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 高昱哲.png", praise: "深度剖析了《哪吒2》的‘登顶法宝’，从IP文化到市场定位，思考逻辑非常成熟且全面！" },
+                { name: "孙祎晨", school: "复旦大学附属闵行实验学校", file: "复旦大学附属闵行实验学校 孙祎晨.png", praise: "独特的剪纸艺术风格让人眼前一亮，生动地传递了‘我命由我不由天’的顽强英雄气概！" },
+                { name: "邢恺恩", school: "上海民办圣华紫竹双语学校", file: "上海民办圣华紫竹双语学校 邢恺恩.jpg", praise: "构图极具张力和视觉冲击力，画笔细腻地捕捉到了小哪吒那股不向命运低头的‘魔童’精神！" }
+            ]
+        }
+    };
 
+    // 渲染首页卡片
     const themesContainer = document.getElementById('themes-container');
     for (let i = 1; i <= 30; i++) {
-        const div = document.createElement('div');
-        div.className = 'theme-card';
-        const title = i === 1 ? "主题01 DeepSeek横空出世，意味着什么？" : `主题${i < 10 ? '0' + i : i} (敬请期待)`;
-        div.innerText = title;
-        div.onclick = () => { if(i===1) showDetail(title); else alert("正在整理中..."); };
-        themesContainer.appendChild(div);
+        const card = document.createElement('div');
+        const hasData = allThemesData[i];
+        card.className = hasData ? 'theme-card active' : 'theme-card';
+        card.innerText = hasData ? allThemesData[i].title : `主题${i < 10 ? '0' + i : i} (敬请期待)`;
+        
+        card.onclick = () => {
+            if(hasData) showDetail(i);
+            else alert("优秀作品正在火速整理中，敬请期待！");
+        };
+        themesContainer.appendChild(card);
     }
 
-    function showDetail(title) {
+    function showDetail(themeId) {
+        const data = allThemesData[themeId];
         document.getElementById('home-page').style.display = 'none';
         document.getElementById('detail-page').style.display = 'block';
-        document.getElementById('current-theme-title').innerText = title;
+        document.getElementById('current-theme-title').innerText = data.title;
+        
         const container = document.getElementById('works-container');
-        container.innerHTML = '';
-        theme01Data.forEach(item => {
+        container.innerHTML = ''; 
+        
+        data.works.forEach(item => {
             container.innerHTML += `
                 <div class="work-box">
                     <div class="img-container">
-                        <img src="${item.file}" onerror="this.src='https://via.placeholder.com/300x200?text=检查图片文件名'" onclick="openModal('${item.file}')">
+                        <img src="${item.file}" 
+                             alt="${item.name}"
+                             onerror="this.src='https://via.placeholder.com/400x300?text=图片加载中...'" 
+                             onclick="openModal('${item.file}')">
                     </div>
-                    <div class="author-info"><b>${item.school}</b><br>${item.name}</div>
-                    <div class="praise-text">🌟 ${item.praise}</div>
+                    <div class="author-info">
+                        <b>${item.school}</b>
+                        <span>${item.name}</span>
+                    </div>
+                    <div class="praise-text">✨ ${item.praise}</div>
                 </div>
             `;
         });
-        window.scrollTo(0,0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showHome() { document.getElementById('home-page').style.display = 'block'; document.getElementById('detail-page').style.display = 'none'; }
-    function openModal(src) { document.getElementById('imageModal').style.display = 'flex'; document.getElementById('modalImg').src = src; }
+    function showHome() {
+        document.getElementById('home-page').style.display = 'block';
+        document.getElementById('detail-page').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openModal(src) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        modal.style.display = 'flex';
+        modalImg.src = src;
+    }
 </script>
 </body>
 </html>
