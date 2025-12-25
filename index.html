@@ -25,13 +25,11 @@
             line-height: 1.6;
         }
 
-        /* 动画效果 */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 首页布局 */
         #home-page {
             max-width: 1200px;
             margin: 0 auto;
@@ -71,6 +69,7 @@
             font-weight: 600;
             color: var(--text-light);
             text-align: center;
+            min-height: 120px;
         }
 
         .theme-card.active {
@@ -85,7 +84,6 @@
             box-shadow: 0 15px 45px rgba(255, 126, 179, 0.3);
         }
 
-        /* 详情页布局 */
         #detail-page {
             display: none;
             padding: 40px 20px;
@@ -125,11 +123,8 @@
             text-align: center;
             font-size: 2rem;
             color: var(--text-main);
-            position: relative;
-            padding-bottom: 10px;
         }
 
-        /* 作品网格 */
         .works-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -153,7 +148,7 @@
 
         .img-container {
             width: 100%;
-            height: 220px;
+            height: 280px;
             background: #fdfdfd;
             border-radius: 16px;
             overflow: hidden;
@@ -164,10 +159,10 @@
         .img-container img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* 完整显示学生手绘作品内容 */
+            object-fit: contain;
             cursor: zoom-in;
             transition: transform 0.5s;
-            background: #f9f9f9;
+            background: #fff;
         }
 
         .author-info {
@@ -197,7 +192,6 @@
             flex-grow: 1;
         }
 
-        /* 模态框 */
         .modal {
             display: none;
             position: fixed;
@@ -217,7 +211,6 @@
             max-width: 95%;
             max-height: 95%;
             border-radius: 5px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
             animation: zoomIn 0.3s ease;
         }
 
@@ -273,25 +266,44 @@
         2: {
             title: "主题02 说说大闹春节档的《哪吒2》",
             works: [
-                { name: "高昱哲", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 高昱哲.png", praise: "深度剖析了《哪吒2》的‘登顶法宝’，从IP文化到市场定位，思考逻辑非常成熟且全面！" },
-                { name: "孙祎晨", school: "复旦大学附属闵行实验学校", file: "复旦大学附属闵行实验学校 孙祎晨.png", praise: "独特的剪纸艺术风格让人眼前一亮，生动地传递了‘我命由我不由天’的顽强英雄气概！" },
-                { name: "邢恺恩", school: "上海民办圣华紫竹双语学校", file: "上海民办圣华紫竹双语学校 邢恺恩.jpg", praise: "构图极具张力和视觉冲击力，画笔细腻地捕捉到了小哪吒那股不向命运低头的‘魔童’精神！" }
+                { name: "高昱哲", school: "华师大前滩学校", file: "华东师范大学第二附属中学前滩学校 高昱哲.png", praise: "从IP、制作到市场全方位解析，‘登顶法宝’总结得非常透彻！" },
+                { name: "孙祎晨", school: "复旦附中闵行实验学校", file: "复旦大学附属闵行实验学校 孙祎晨.png", praise: "精美的剪纸风格，将哪吒的英气与传统文化完美融合，创意十足！" },
+                { name: "邢恺恩", school: "圣华紫竹双语学校", file: "上海民办圣华紫竹双语学校 邢恺恩.jpg", praise: "构图极具爆发力，画出了哪吒‘我命由我不由天’的顽强斗志！" },
+                { name: "张佑琪", school: "上海市蔡路中学", file: "上海市蔡路中学 张佑琪.png", praise: "不仅有细腻的人物速写，对电影核心精神的感悟也充满了正能量。" },
+                { name: "蒲娅楠", school: "嘉定区练川实验学校", file: "上海市嘉定区练川实验学校 蒲娅楠.jpg", praise: "哪吒与敖丙并肩而立，画面和谐，展现了对友谊与成长的深刻思考。" },
+                { name: "沈梦婕", school: "君莲学校（小学部）", file: "上海市闵行区君莲学校（小学部）沈梦婕.png", praise: "课堂笔记条理分明，饺子导演的奋斗历程总结得非常励志，支持国产！" },
+                { name: "姚欣依", school: "建平临港小学", file: "上海市浦东新区建平临港小学 姚欣依.png", praise: "画面动感十足，色彩明快，生动捕捉了哪吒勇敢直面困难的英姿。" },
+                { name: "刘梓萱", school: "金山区第二实验小学", file: "上海市金山区第二实验小学 刘梓萱.jpg", praise: "极具逻辑性的‘成功流水线’图表，精准复盘了电影登顶的每一个关键点！" },
+                { name: "周雨潼", school: "君莲学校（中学部）", file: "上海市闵行区君莲学校（中学部） 周雨潼.jpg", praise: "充满艺术感的字体排版与人物剪影，视觉冲击力极强，精神内涵丰富。" },
+                { name: "吴诗睿", school: "君莲学校（小学部）", file: "上海市闵行区君莲学校（小学部）吴诗睿.png", praise: "课堂笔记细致入微，对电影中的国风元素和文化渊源有独特的见解。" },
+                { name: "牛杨淋荟", school: "崇明中学附属东门中学", file: "上海市崇明中学附属东门中学 牛杨淋荟.jpg", praise: "观后感笔触深情且大气，将哪吒精神与现实拼搏结合，立意极远。" },
+                { name: "潘悦嘉", school: "建平临港小学", file: "上海市浦东新区建平临港小学 潘悦嘉.jpg", praise: "巧妙的性格与外貌拼贴分析，全方位展示了‘我命由我不由天’的飒爽少年。" },
+                { name: "宣璟怡", school: "建平临港小学", file: "上海市浦东新区建平临港小学 宣璟怡.jpg", praise: "以‘哪吒的老师’为视角，充满了童趣，将传统神话进行了生动的现代演绎。" },
+                { name: "周幼玟", school: "尚博实验小学", file: "上海市浦东新区尚博实验小学 周幼玟.jpg", praise: "手绘形象灵动，表情捕捉到位，对电影精神的解读非常热血沸腾。" },
+                { name: "颜睿希", school: "尚博实验小学", file: "上海市浦东新区尚博实验小学 颜睿希.jpg", praise: "英姿飒爽的哪吒形象，配以充满激情的文字，展现了少年人特有的奋斗精神。" },
+                { name: "蔡毓翎", school: "上海市莘城学校", file: "上海市莘城学校 蔡毓翎.jpg", praise: "图文结合紧密，六条核心总结深刻揭示了电影不仅是神话，更是成长的洗礼。" },
+                { name: "胡云翼", school: "上海市莘城学校", file: "上海市莘城学校 胡云翼.jpg", praise: "构图宏大，色彩饱满，展现了哪吒重生抗争的宏伟场面，非常有想象力！" },
+                { name: "陈嫣胤", school: "七宝外国语小学", file: "上海市七宝外国语小学 陈嫣胤.png", praise: "画风独特，将哪吒与‘零食沼泽怪’结合，富有生活气息且充满创意！" },
+                { name: "陈嘉懿", school: "浦东新区锦绣小学", file: "上海市浦东新区锦绣小学 陈嘉懿.jpg", praise: "细腻的笔触构建了跨越时空的英雄共鸣，展示了深厚的绘画功底和独特的审美。" },
+                { name: "刘柏锋", school: "建平永宁小学", file: "上海市浦东新区建平永宁小学 刘柏锋.jpg", praise: "数据分析详尽，将现代校园守护与传统英雄精神结合，逻辑严密且富有温情。" },
+                { name: "姚玥", school: "上海市莘城学校", file: "上海市莘城学校 姚玥.jpg", praise: "海报级别的画面表现力，完美诠释了哪吒‘帅气’与‘英勇’并存的一面。" },
+                { name: "陈玥岚", school: "上海市莘城学校", file: "上海市莘城学校 陈玥岚.jpg", praise: "通过对比分析，层层剥离出‘走出心魔’的主题，思维导图形式让人印象深刻。" },
+                { name: "陈冰冰", school: "三林实验小学", file: "上海市浦东新区三林实验小学 陈冰冰.png", praise: "将电影精神与现实文化自信、时事紧密关联，视野开阔，展现了中学生的责任感。" },
+                { name: "费曜恒", school: "上海市西林中学", file: "上海市西林中学 费曜恒.jpg", praise: "角色分析透彻，分栏式排版非常清晰，是一份优秀的观影心得总结。" },
+                { name: "周心怡", school: "上海市西林中学", file: "上海市西林中学 周心怡.jpg", praise: "色彩热烈，视觉冲击力强，哪吒与龙王斗争的画面极具叙事张力。" },
+                { name: "张诗琪", school: "上海市西林中学", file: "上海市西林中学 张诗琪.png", praise: "不仅画出了哪吒的灵动，文字感悟也道出了成长并非一帆风顺，而是挫折中的涅槃。" },
+                { name: "张玮菡", school: "上海市实验学校东校", file: "上海市实验学校东校 张玮菡.png", praise: "三段式的深入剖析，从形象到精神，将哪吒这一少年的挣扎与热血写得入木三分。" }
             ]
         }
     };
 
-    // 渲染首页卡片
     const themesContainer = document.getElementById('themes-container');
     for (let i = 1; i <= 30; i++) {
         const card = document.createElement('div');
         const hasData = allThemesData[i];
         card.className = hasData ? 'theme-card active' : 'theme-card';
         card.innerText = hasData ? allThemesData[i].title : `主题${i < 10 ? '0' + i : i} (敬请期待)`;
-        
-        card.onclick = () => {
-            if(hasData) showDetail(i);
-            else alert("优秀作品正在火速整理中，敬请期待！");
-        };
+        card.onclick = () => { if(hasData) showDetail(i); else alert("优秀作品整理中，请期待下个主题上线！"); };
         themesContainer.appendChild(card);
     }
 
@@ -300,26 +312,20 @@
         document.getElementById('home-page').style.display = 'none';
         document.getElementById('detail-page').style.display = 'block';
         document.getElementById('current-theme-title').innerText = data.title;
-        
         const container = document.getElementById('works-container');
         container.innerHTML = ''; 
-        
         data.works.forEach(item => {
             container.innerHTML += `
                 <div class="work-box">
                     <div class="img-container">
-                        <img src="${item.file}" 
-                             alt="${item.name}"
-                             onerror="this.src='https://via.placeholder.com/400x300?text=图片加载中...'" 
-                             onclick="openModal('${item.file}')">
+                        <img src="${item.file}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400x300?text=图片路径确认中'" onclick="openModal('${item.file}')">
                     </div>
                     <div class="author-info">
                         <b>${item.school}</b>
                         <span>${item.name}</span>
                     </div>
-                    <div class="praise-text">✨ ${item.praise}</div>
-                </div>
-            `;
+                    <div class="praise-text">🌟 ${item.praise}</div>
+                </div>`;
         });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
