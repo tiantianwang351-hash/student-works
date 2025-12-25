@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>2025年新闻课堂作品展</title>
+    <style>
+        :root { --primary-color: #ff7eb3; --secondary-color: #64d1ff; --bg-color: #fff9e6; }
+        body { font-family: "Microsoft YaHei", sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; }
+        #home-page { padding: 40px 20px; text-align: center; }
+        .main-title { font-size: 3em; color: #ff6b6b; text-shadow: 2px 2px 0 #fff; margin-bottom: 50px; }
+        .themes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .theme-card { 
+            background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); 
+            border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 20px; 
+            padding: 30px; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; font-weight: bold; color: #555;
+        }
+        .theme-card:hover { transform: translateY(-5px); background: var(--primary-color); color: white; }
+
+        #detail-page { display: none; padding: 40px; }
+        .back-btn { background: var(--secondary-color); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; margin-bottom: 20px; }
+        .detail-title { text-align: center; color: #444; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 3px dashed var(--secondary-color); }
+        
+        .works-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .work-box { 
+            background: white; border-radius: 20px; padding: 15px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; align-items: center;
+            transition: transform 0.3s; border: 2px solid transparent;
+        }
+        .work-box:hover { transform: scale(1.02); border-color: var(--primary-color); }
+
+        .img-container { 
+            width: 100%; height: 220px; 
+            display: flex; align-items: center; justify-content: center;
+            background: #f9f9f9; border-radius: 10px; overflow: hidden; margin-bottom: 15px;
+        }
+        .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
+
+        .author-info { font-size: 0.9em; color: #666; text-align: center; line-height: 1.5; height: 3em; }
+        .praise-text { font-size: 0.85em; color: #e67e22; background: #fffcf0; padding: 8px; border-radius: 8px; margin-top: 10px; width: 100%; box-sizing: border-box; }
+
+        .modal { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        .modal img { max-width: 95%; max-height: 95%; border: 3px solid white; }
+
+        @media (max-width: 1100px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+
+<div id="home-page">
+    <h1 class="main-title">🎨 2025年新闻课堂作品展</h1>
+    <div class="themes-grid" id="themes-container"></div>
+</div>
+
+<div id="detail-page">
+    <button class="back-btn" onclick="showHome()">← 返回首页</button>
+    <h2 id="current-theme-title" class="detail-title"></h2>
+    <div class="works-grid" id="works-container"></div>
+</div>
+
+<div id="imageModal" class="modal" onclick="this.style.display='none'"><img id="modalImg" src=""></div>
+
+<script>
+    const theme01Data = [
+        { name: "奚嘉怡", school: "上师大附中金山前京中学", file: "上海师范大学附属金山前京中学 奚嘉怡.jpg", praise: "色彩鲜艳，鲸鱼形象生动，排版逻辑满分！" },
+        { name: "方毓馨", school: "上师大附中金山前京中学", file: "上海师范大学附属金山前京中学 方毓馨.jpg", praise: "对AI原理的拆解细致，展现了严谨的科学态度！" },
+        { name: "付玥", school: "闵行区君莲学校", file: "junlian01.jpg.jpg", praise: "笔记工整，彩色装饰充满童趣，总结感悟非常深刻！" },
+        { name: "谭思萌", school: "闵行区君莲学校", file: "junlian02.jpg.jpg", praise: "重点突出，对DeepSeek的思考很有深度，观察力强！" },
+        { name: "张梵馨", school: "虹口实验学校", file: "上海市虹口实验学校 张梵馨.jpg", praise: "学习单完成出色，思维导图清晰，习惯非常好！" },
+        { name: "顾琳菲", school: "金桥镇中心小学", file: "上海市浦东新区金桥镇中心小学 顾琳菲.jpg", praise: "用色区分重点，态度认真，收获写得非常详尽！" },
+        { name: "张李琪", school: "嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 张李琪.jpg", praise: "时政随笔有见地，展现了中学生敏锐的观察力！" },
+        { name: "宣璟怡", school: "建平临港小学", file: "上海市浦东新区建平临港小学 宣璟怡.jpg", praise: "文章精彩，字里行间充满了对国产科技崛起的自豪！" },
+        { name: "陈沁瑜", school: "上海市西林中学", file: "上海市西林中学 陈沁瑜.jpg", praise: "条理清晰，文字功底扎实，对AI普及的思考很到位！" },
+        { name: "毛诗雯", school: "上海市西林中学", file: "上海市西林中学 毛诗雯.png", praise: "感悟深刻，展现了对AI未来的理性期待与辩证思考！" },
+        { name: "蒋玉婷", school: "上海市蔡路中学", file: "上海市蔡路中学 蒋玉婷.png", praise: "观点独到，提醒我们要保持判断力，非常有前瞻性！" },
+        { name: "高俊宸", school: "上海市黄楼中学", file: "上海市黄楼中学 高俊宸.jpg", praise: "笔记逻辑性极强，把技术优势分析得头头是道！" },
+        { name: "尹美茜", school: "上海市松江一中", file: "上海市松江一中 尹美茜.png", praise: "文字优美，将科技突破与乡土情怀结合，立意极高！" },
+        { name: "夏姝砚", school: "上海市松江一中", file: "上海市松江一中 夏姝砚.png", praise: "辩证看待技术，逻辑严密，展现了卓越的学术潜质！" }
+    ];
+
+    const themesContainer = document.getElementById('themes-container');
+    for (let i = 1; i <= 30; i++) {
+        const div = document.createElement('div');
+        div.className = 'theme-card';
+        const title = i === 1 ? "主题01 DeepSeek横空出世，意味着什么？" : `主题${i < 10 ? '0' + i : i} (敬请期待)`;
+        div.innerText = title;
+        div.onclick = () => { if(i===1) showDetail(title); else alert("正在整理中..."); };
+        themesContainer.appendChild(div);
+    }
+
+    function showDetail(title) {
+        document.getElementById('home-page').style.display = 'none';
+        document.getElementById('detail-page').style.display = 'block';
+        document.getElementById('current-theme-title').innerText = title;
+        const container = document.getElementById('works-container');
+        container.innerHTML = '';
+        theme01Data.forEach(item => {
+            container.innerHTML += `
+                <div class="work-box">
+                    <div class="img-container">
+                        <img src="${item.file}" onerror="this.src='https://via.placeholder.com/300x200?text=检查图片文件名'" onclick="openModal('${item.file}')">
+                    </div>
+                    <div class="author-info"><b>${item.school}</b><br>${item.name}</div>
+                    <div class="praise-text">🌟 ${item.praise}</div>
+                </div>
+            `;
+        });
+        window.scrollTo(0,0);
+    }
+
+    function showHome() { document.getElementById('home-page').style.display = 'block'; document.getElementById('detail-page').style.display = 'none'; }
+    function openModal(src) { document.getElementById('imageModal').style.display = 'flex'; document.getElementById('modalImg').src = src; }
+</script>
+</body>
+</html>
