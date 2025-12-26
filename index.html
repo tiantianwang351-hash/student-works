@@ -173,7 +173,7 @@
         .author-info b {
             display: block;
             color: var(--secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 4px;
         }
 
@@ -257,12 +257,13 @@
         2: {
             title: "主题02 说说大闹春节档的《哪吒2》",
             works: [
-                { name: "高昱哲", school: "华东师范大学第二附属中学前滩学校 file: "华东师范大学第二附属中学前滩学校 高昱哲.png", praise: "从IP制作到市场全方位解析，‘登顶法宝’复盘得非常透彻！" },
+                { name: "高昱哲", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 高昱哲.png", praise: "从IP制作到市场全方位解析，‘登顶法宝’复盘得非常透彻！" },
                 { name: "孙祎晨", school: "复旦大学附属闵行实验学校", file: "复旦大学附属闵行实验学校 孙祎晨.png", praise: "精美的剪纸风格，将哪吒的英气与传统文化融合，创意惊艳！" },
                 { name: "邢恺恩", school: "上海民办圣华紫竹双语学校", file: "上海民办圣华紫竹双语学校 邢恺恩.jpg", praise: "画作极具张力，捕捉到了小哪吒那股不屈的‘魔童’精神！" },
                 { name: "张佑琪", school: "上海市蔡路中学", file: "上海市蔡路中学 张佑琪.png", praise: "手绘细节丰富，感悟道出了‘命运掌握在自己手中’的真谛。" },
                 { name: "刘梓萱", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 刘梓萱.jpg", praise: "极具创意的‘成功流水线’逻辑图，展现了超强的数据复盘能力！" },
-                { name: "陈冰冰", school: "上海市浦东新区三林实验小学", file: "上海市浦东新区三林实验小学 陈冰冰.png", praise: "视野宏大，将电影精神与文化自信、国际时事联系在一起，思考深邃。" }
+                { name: "陈冰冰", school: "上海市浦东新区三林实验小学", file: "上海市浦东新区三林实验小学 陈冰冰.png", praise: "视野宏大，将电影精神与文化自信、国际时事联系在一起，思考深邃。" },
+                { name: "张玮菡", school: "上海市实验学校东校", file: "上海市实验学校东校 张玮菡.png", praise: "三段式的深入剖析，从形象到精神，将哪吒的少年热血刻画得入木三分。" }
             ]
         },
         3: {
@@ -297,7 +298,7 @@
         const hasData = allThemesData[i];
         card.className = hasData ? 'theme-card active' : 'theme-card';
         card.innerText = hasData ? allThemesData[i].title : `主题${i < 10 ? '0' + i : i} (敬请期待)`;
-        card.onclick = () => { if(hasData) showDetail(i); else alert("正在整理中..."); };
+        card.onclick = () => { if(hasData) showDetail(i); else alert("优秀作品正在火速整理中，敬请期待！"); };
         themesContainer.appendChild(card);
     }
 
