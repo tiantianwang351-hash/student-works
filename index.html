@@ -24,6 +24,7 @@
             overflow-x: hidden; position: relative; scroll-behavior: smooth;
         }
 
+        /* --- Logo 悬浮设计 --- */
         .scrolling-logo {
             position: absolute; top: 25px; right: 25px; z-index: 10000;
             width: 100px; height: 100px;
@@ -34,6 +35,7 @@
         }
         @keyframes logoFloat { 0%,100% {transform:translateY(0);} 50% {transform:translateY(-5px);} }
 
+        /* --- 首页布局 --- */
         #entrance-page {
             display: flex; align-items: center; justify-content: center;
             min-height: 100vh; padding: 0 8%; box-sizing: border-box;
@@ -48,19 +50,19 @@
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
         .title-main { 
-            font-size: clamp(3rem, 5vw, 4.2rem); margin: 0; color: var(--text-navy); 
-            white-space: nowrap; letter-spacing: 2px; text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+            font-size: clamp(2.2rem, 5vw, 4.2rem); margin: 0; color: var(--text-navy); 
+            line-height: 1.2; letter-spacing: 2px; text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
         }
         
         .title-sub { 
-            font-size: 1.6rem; color: #455a64; font-weight: 500;
-            margin: 10px 0 40px; text-align: right; max-width: 720px; 
+            font-size: clamp(1.1rem, 2vw, 1.6rem); color: #455a64; font-weight: 500;
+            margin: 15px 0 35px; text-align: right; max-width: 720px; 
         }
 
         .intro-text { 
-            line-height: 1.9; font-size: 1.15rem; color: #37474f; 
+            line-height: 1.9; font-size: 1.1rem; color: #37474f; 
             max-width: 620px; text-align: justify;
-            background: rgba(255,255,255,0.6); padding: 35px; border-radius: 25px;
+            background: rgba(255,255,255,0.6); padding: clamp(20px, 4vw, 35px); border-radius: 25px;
             backdrop-filter: blur(5px); border: 2px solid rgba(255,255,255,0.8);
             box-shadow: var(--card-shadow);
         }
@@ -73,12 +75,12 @@
         }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
 
-        .hero-right .visual-container { width: 450px; height: 450px; }
-        .earth-svg { filter: drop-shadow(0 20px 40px rgba(1, 87, 155, 0.2)); transition: transform 0.3s; }
+        .hero-right .visual-container { width: clamp(280px, 40vw, 450px); height: clamp(280px, 40vw, 450px); }
+        .earth-svg { width: 100%; height: 100%; filter: drop-shadow(0 20px 40px rgba(1, 87, 155, 0.2)); }
         .doodles-svg { position: absolute; top:0; left:0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
 
         .btn-enter {
-            margin-top: 50px; padding: 18px 60px; font-size: 1.3rem; 
+            margin-top: 40px; padding: 18px 50px; font-size: 1.2rem; 
             font-weight: bold; color: #5f4300; background: var(--btn-yellow); 
             border: none; border-radius: 100px; cursor: pointer; 
             box-shadow: 0 8px 0 #f57f17, 0 15px 20px rgba(245, 127, 23, 0.2);
@@ -90,11 +92,11 @@
             box-shadow: 0 12px 0 #f57f17, 0 25px 40px rgba(245, 127, 23, 0.3); 
         }
 
+        /* --- 展廊头部 --- */
         .top-banner { 
-            background: var(--header-blue); 
-            padding: 90px 20px 70px;
+            background: var(--header-blue); padding: 100px 20px 70px;
             color: white; text-align: center;
-            display: flex; align-items: center; justify-content: center; gap: 50px;
+            display: flex; align-items: center; justify-content: center; gap: 40px;
             position: relative;
             border-bottom-left-radius: 50% 20px; border-bottom-right-radius: 50% 20px;
             box-shadow: 0 10px 30px rgba(2, 136, 209, 0.2);
@@ -105,18 +107,17 @@
             border-bottom-left-radius: 50% 20px; border-bottom-right-radius: 50% 20px;
         }
 
-        .banner-side-doodle { width: 160px; height: 160px; }
-        .banner-side-doodle .earth-svg { width: 90px; height: 90px; }
-        
+        .banner-side-doodle { width: 150px; height: 150px; }
         .glowing-ring {
-            position: absolute; width: 340px; height: 340px; border-radius: 50%;
+            position: absolute; width: 300px; height: 300px; border-radius: 50%;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 65%);
             z-index: 1; animation: spinSlow 20s linear infinite;
         }
         @keyframes spinSlow { to { transform: rotate(360deg); } }
 
+        /* --- 网格布局 --- */
         .themes-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); 
             gap: 25px; max-width: 1200px; margin: 60px auto; padding: 0 25px; 
         }
         .theme-card { 
@@ -133,7 +134,7 @@
         }
         
         #detail-page { display: none; padding: 40px 25px; }
-        .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
         .work-box { 
             background: white; border-radius: 25px; padding: 18px; 
             border: 2px solid #e0e0e0; display: flex; flex-direction: column; 
@@ -152,12 +153,19 @@
         .modal { display: none; position: fixed; z-index: 100001; top: 0; left: 0; width: 100%; height: 100%; background: rgba(1, 87, 155, 0.95); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal img { max-width: 95%; max-height: 95%; border: 5px solid white; border-radius: 15px; }
 
-        @media (max-width: 1200px) {
-            .title-main { font-size: 2.8rem; white-space: normal; }
-            #entrance-page { flex-direction: column; text-align: center; padding-top: 120px; gap: 40px; }
+        /* --- 自适应手机端适配方案 --- */
+        @media (max-width: 1024px) {
+            #entrance-page { flex-direction: column-reverse; text-align: center; padding-top: 100px; gap: 40px; }
             .hero-left { text-align: center; display: flex; flex-direction: column; align-items: center; }
-            .title-sub { text-align: center; margin-right: 0; }
-            .top-banner { flex-direction: column; gap: 30px; padding: 120px 20px 80px; }
+            .title-sub { text-align: center; margin-bottom: 25px; }
+            .top-banner { flex-direction: column; gap: 30px; padding-top: 120px; }
+            .banner-side-doodle { display: none; } /* 窄屏隐藏banner两侧装饰，保持整洁 */
+            .scrolling-logo { width: 70px; height: 70px; top: 15px; right: 15px; }
+            .title-main { white-space: normal; }
+        }
+        @media (max-width: 480px) {
+            .intro-text { padding: 20px; font-size: 1rem; }
+            .btn-enter { width: 100%; padding: 15px 0; }
         }
     </style>
 </head>
@@ -178,7 +186,7 @@
     
     <div class="hero-right">
         <div class="visual-container">
-            <div class="glowing-ring"></div>
+            <div class="glowing-ring" style="background: radial-gradient(circle, rgba(79, 195, 247, 0.3) 0%, transparent 70%);"></div>
             <svg class="earth-svg" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="48" fill="#4fc3f7"/>
                 <path d="M30 30 Q 40 20 55 25 T 80 40 T 70 70 Q 55 85 35 75 T 25 50 Z" fill="#81c784" opacity="0.9"/>
@@ -210,9 +218,9 @@
         </div>
 
         <div class="banner-text-content">
-            <h1 style="font-size: 3.2rem; margin: 0; letter-spacing: 3px;">【2025年新闻话题】</h1>
-            <p style="font-size: 1.3rem; opacity: 0.95; margin-top:15px; font-weight: 500;">—— 少年眼中的时代印记 ——</p>
-            <button onclick="showEntrance()" style="background:rgba(255,255,255,0.25); border:2px solid white; color:white; padding:10px 35px; border-radius:50px; cursor:pointer; margin-top:25px; font-weight:bold; transition:0.3s;">🏠 返回首页</button>
+            <h1 style="font-size: clamp(1.8rem, 4vw, 3.2rem); margin: 0; letter-spacing: 3px;">【2025年新闻话题】</h1>
+            <p style="font-size: 1.2rem; opacity: 0.95; margin-top:15px; font-weight: 500;">—— 少年眼中的时代印记 ——</p>
+            <button onclick="showEntrance()" style="background:rgba(255,255,255,0.25); border:2px solid white; color:white; padding:10px 30px; border-radius:50px; cursor:pointer; margin-top:20px; font-weight:bold; transition:0.3s;">🏠 返回首页</button>
         </div>
 
         <div class="visual-container banner-side-doodle">
@@ -224,14 +232,13 @@
             </svg>
         </div>
     </div>
-
     <div class="themes-grid" id="themes-container"></div>
 </div>
 
 <div id="detail-page">
-    <div style="max-width:1400px; margin:0 auto 35px; display:flex; align-items:center; gap:20px; flex-wrap: wrap;">
+    <div style="max-width:1400px; margin:0 auto 30px; display:flex; align-items:center; gap:20px; flex-wrap: wrap; justify-content: center;">
         <button class="btn-enter" style="margin:0; padding:12px 35px; font-size:1.1rem;" onclick="showThemes()">← 返回展廊</button>
-        <h2 id="theme-title" style="flex-grow:1; text-align:center; margin:0; color:var(--text-navy); font-size:2rem;"></h2>
+        <h2 id="theme-title" style="flex-grow:1; text-align:center; margin:0; color:var(--text-navy); font-size:1.8rem;"></h2>
     </div>
     <div class="works-grid" id="works-container"></div>
 </div>
@@ -239,6 +246,7 @@
 <div id="imageModal" class="modal" onclick="this.style.display='none'"><img id="modalImg"></div>
 
 <script>
+    // --- 数据部分保持不变 ---
     const allThemesData = {
         1: {
             title: "主题01 DeepSeek横空出世，意味着什么？",
@@ -277,22 +285,18 @@
         toggle('detail-page');
         document.getElementById('theme-title').innerText = data.title;
         const container = document.getElementById('works-container');
-        container.innerHTML = '';
-        data.works.forEach(item => {
-            const box = document.createElement('div');
-            box.className = 'work-box';
-            box.innerHTML = `
+        container.innerHTML = data.works.map(item => `
+            <div class="work-box">
                 <div class="img-wrap"><img src="${item.file}" onerror="if(this.src.indexOf('.jpg.jpg') == -1){ this.src = this.src + '.jpg'; }" onclick="openModal(this.src)"></div>
                 <div style="text-align:center; padding:12px;">
                     <b style="color:var(--brand-blue); display:block; font-size:0.85rem; margin-bottom:5px;">${item.school}</b>
                     <span style="font-weight:bold; font-size:1.15rem; color:#333;">${item.name}</span>
                 </div>
-                <div class="praise-box">🌟 ${item.praise}</div>`;
-            container.appendChild(box);
-        });
+                <div class="praise-box">🌟 ${item.praise}</div>
+            </div>`).join('');
     }
 
-    const container = document.getElementById('themes-container');
+    const grid = document.getElementById('themes-container');
     for(let i=1; i<=30; i++) {
         const div = document.createElement('div');
         const hasData = allThemesData[i] && allThemesData[i].works.length > 0;
@@ -300,7 +304,7 @@
         div.innerHTML = `<span style="font-size:2rem; display:block; margin-bottom:10px;">${hasData?'📂':'🔒'}</span>` + (allThemesData[i] ? allThemesData[i].title : "主题 " + (i<10?'0'+i:i) + " (筹备中)");
         if(!hasData) div.style.opacity = "0.6";
         div.onclick = () => { if(hasData) showDetail(i); else alert("该主题作品整理中..."); };
-        container.appendChild(div);
+        grid.appendChild(div);
     }
 
     function openModal(src) {
