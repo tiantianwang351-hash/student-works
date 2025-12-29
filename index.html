@@ -21,7 +21,7 @@
             position: relative;
         }
 
-        /* --- 电脑端样式 --- */
+        /* --- 原始动画与Logo --- */
         .scrolling-logo {
             position: absolute;
             top: 25px; right: 25px; z-index: 10000; 
@@ -67,7 +67,16 @@
         .img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .praise-box { font-size: 0.85rem; color: #555; background: #fffde7; padding: 10px; border-radius: 10px; border-left: 4px solid var(--btn-yellow); flex-grow: 1; margin-top: 10px; }
 
-        /* --- 手机端适配 --- */
+        /* --- 弹窗与切换修正 --- */
+        .gallery-modal { display: none; position: fixed; z-index: 100001; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 15, 30, 0.95); backdrop-filter: blur(15px); justify-content: center; align-items: center; }
+        .gallery-content { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: center; }
+        .gallery-img-container { width: 100%; height: 70vh; display: flex; justify-content: center; align-items: center; padding: 0 20px; box-sizing: border-box; }
+        .gallery-img { max-width: 100%; max-height: 100%; border: 4px solid white; border-radius: 8px; object-fit: contain; }
+        
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 50px; color: white; cursor: pointer; background: rgba(255,255,255,0.1); width: 60px; height: 100px; display: flex; align-items: center; justify-content: center; z-index: 100005; user-select: none; }
+        .prev-arrow { left: 0; border-radius: 0 15px 15px 0; }
+        .next-arrow { right: 0; border-radius: 15px 0 0 15px; }
+
         @media (max-width: 1024px) {
             .scrolling-logo { width: 60px; height: 60px; top: 15px; right: 15px; border-radius: 12px; }
             #entrance-page { flex-direction: column; padding: 80px 5% 40px; justify-content: flex-start; }
@@ -79,15 +88,8 @@
             .top-banner { flex-direction: row; flex-wrap: wrap; padding: 100px 10px 30px; gap: 10px; }
             .banner-side-doodle { width: 65px; height: 65px; display: block !important; }
             .banner-side-doodle .earth-svg { width: 45px; height: 45px; }
-            .banner-text-content { order: 2; width: 100%; }
-            .banner-text-content h1 { font-size: 1.8rem !important; }
-            .works-grid { grid-template-columns: 1fr; gap: 20px; }
+            .nav-arrow { width: 45px; height: 80px; font-size: 35px; }
         }
-
-        .gallery-modal { display: none; position: fixed; z-index: 100001; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 15, 30, 0.95); backdrop-filter: blur(15px); justify-content: center; align-items: center; }
-        .gallery-content { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: center; }
-        .gallery-img-container { width: 100%; height: 70vh; display: flex; justify-content: center; align-items: center; padding: 0 20px; box-sizing: border-box; }
-        .gallery-img { max-width: 100%; max-height: 100%; border: 4px solid white; border-radius: 8px; object-fit: contain; }
     </style>
 </head>
 <body>
@@ -147,11 +149,15 @@
     <div class="works-grid" id="works-container"></div>
 </div>
 
-<div id="galleryModal" class="gallery-modal" onclick="closeGallery()">
-    <div style="position:absolute; top:20px; right:20px; color:white; font-size:35px; cursor:pointer;">✕</div>
+<div id="galleryModal" class="gallery-modal">
+    <div onclick="closeGallery()" style="position:absolute; top:20px; right:20px; color:white; font-size:45px; cursor:pointer; z-index:100010; background:rgba(255,255,255,0.1); width:60px; height:60px; display:flex; align-items:center; justify-content:center; border-radius:50%;">✕</div>
+    
+    <div class="nav-arrow prev-arrow" onclick="changeGallery(-1)">‹</div>
+    <div class="nav-arrow next-arrow" onclick="changeGallery(1)">›</div>
+
     <div class="gallery-content" onclick="event.stopPropagation()">
         <div class="gallery-img-container"><img id="galleryImg" class="gallery-img" src=""></div>
-        <div id="gallery-info" style="color:white; text-align:center; padding:20px;">
+        <div id="gallery-info" style="color:white; text-align:center; padding:20px; z-index:100003;">
             <div id="gallery-school" style="font-size:1rem; opacity:0.8; margin-bottom:5px;"></div>
             <div id="gallery-name" style="font-size:1.5rem; font-weight:bold;"></div>
             <div id="gallery-praise" style="color:var(--btn-yellow); margin-top:10px; font-style:italic;"></div>
@@ -242,6 +248,9 @@
             ] 
         }
     };
+
+    let curTid = 0; let curWidx = 0;
+
     function toggle(id) {
         document.getElementById('entrance-page').style.display = 'none';
         document.getElementById('themes-page').style.display = 'none';
@@ -253,12 +262,13 @@
     function showEntrance() { toggle('entrance-page'); }
     function showThemes() { toggle('themes-page'); }
     function showDetail(id) {
+        curTid = id;
         const data = allThemesData[id];
         toggle('detail-page');
         document.getElementById('theme-title').innerText = data.title;
         const container = document.getElementById('works-container');
         container.innerHTML = data.works.map((item, index) => `
-            <div class="work-box" onclick="openGallery(${index}, ${id})">
+            <div class="work-box" onclick="openGallery(${index})">
                 <div class="img-wrap"><img src="${item.file}" onerror="if(this.src.indexOf('.jpg.jpg')==-1)this.src+='.jpg'"></div>
                 <div style="text-align:center; padding:10px;">
                     <div style="color:var(--brand-blue); font-size:0.85rem;">${item.school}</div>
@@ -267,16 +277,27 @@
                 <div class="praise-box">🌟 ${item.praise}</div>
             </div>`).join('');
     }
-    function openGallery(idx, themeId) {
-        const item = allThemesData[themeId].works[idx];
+
+    function updateGalleryContent() {
+        const item = allThemesData[curTid].works[curWidx];
         const img = document.getElementById('galleryImg');
         img.src = item.file;
         img.onerror = function() { if(this.src.indexOf('.jpg.jpg')==-1) this.src+='.jpg'; };
         document.getElementById('gallery-school').innerText = item.school;
         document.getElementById('gallery-name').innerText = item.name;
         document.getElementById('gallery-praise').innerText = "“" + item.praise + "”";
+    }
+
+    function openGallery(idx) {
+        curWidx = idx;
+        updateGalleryContent();
         document.getElementById('galleryModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
+    }
+    function changeGallery(dir) {
+        const total = allThemesData[curTid].works.length;
+        curWidx = (curWidx + dir + total) % total;
+        updateGalleryContent();
     }
     function closeGallery() { document.getElementById('galleryModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
