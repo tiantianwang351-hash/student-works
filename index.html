@@ -88,7 +88,7 @@
         .prev-arrow { left: 0; border-radius: 0 15px 15px 0; }
         .next-arrow { right: 0; border-radius: 15px 0 0 15px; }
 
-        /* --- 手机端适配：在此处做针对性修改，不影响网页 --- */
+           /* --- 手机端适配：仅在此处修改，不影响网页端 --- */
         @media (max-width: 1024px) {
             .scrolling-logo { width: 60px; height: 60px; top: 15px; right: 15px; border-radius: 12px; }
             #entrance-page { flex-direction: column; padding: 80px 5% 40px; justify-content: flex-start; }
@@ -98,17 +98,31 @@
             .title-main { font-size: 2.2rem; white-space: normal; line-height: 1.2; }
             .title-sub { font-size: 1.2rem; text-align: center; margin: 10px 0 30px; }
 
-            /* 手机端定向修复：页面2顶栏单行居中 */
+            /* 核心：修复第二页顶栏居中 */
             .top-banner { padding: 100px 10px 30px; gap: 0; justify-content: space-between; }
-            .banner-side-doodle { width: 60px !important; height: 60px !important; }
-            .banner-text-content { flex: 1; text-align: center; min-width: 0; }
+            .banner-side-doodle { width: 60px !important; height: 60px !important; flex-shrink: 0; }
+            
+            .banner-text-content { 
+                flex: 1; 
+                min-width: 0; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; /* 确保内容垂直居中排列 */
+                text-align: center; 
+            }
             .banner-text-content h1 { 
-                font-size: 5.8vw !important; /* 动态缩放 */
-                white-space: nowrap !important; /* 强制不换行 */
+                font-size: 5.8vw !important; /* 动态缩小字体 */
+                white-space: nowrap !important; /* 绝对不换行 */
                 display: block !important;
                 width: 100% !important;
+                text-align: center !important;
+                margin: 0 auto !important;
                 letter-spacing: 1px !important;
             }
+            .banner-text-content button {
+                margin: 15px auto 0 !important; /* 确保返回首页按钮居中 */
+            }
+
             .nav-arrow { width: 45px; height: 80px; font-size: 35px; }
         }
     </style>
