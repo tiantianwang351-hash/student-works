@@ -21,7 +21,7 @@
             position: relative;
         }
 
-        /* --- 原始动画与Logo --- */
+        /* --- 首页样式 --- */
         .scrolling-logo {
             position: absolute;
             top: 25px; right: 25px; z-index: 10000; 
@@ -51,15 +51,26 @@
         .doodles-svg { position: absolute; top:0; left:0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
 
         .btn-enter { margin-top: 50px; padding: 18px 60px; font-size: 1.3rem; font-weight: bold; color: #5f4300; background: var(--btn-yellow); border: none; border-radius: 100px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 0 #f57f17; }
-        .btn-enter:hover { transform: scale(1.05); box-shadow: 0 10px 0 #f57f17; }
 
-        .top-banner { background: var(--header-blue); padding: 80px 20px 40px; border-bottom: 8px solid var(--btn-yellow); color: white; text-align: center; display: flex; align-items: center; justify-content: center; gap: 50px; }
+        /* --- 页面2：主题列表（网页端保持原状） --- */
+        .top-banner { 
+            background: var(--header-blue); 
+            padding: 80px 20px 40px; 
+            border-bottom: 8px solid var(--btn-yellow); 
+            color: white; 
+            text-align: center; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 50px; 
+        }
         .banner-side-doodle { width: 150px; height: 150px; flex-shrink: 0; }
-        .banner-side-doodle .earth-svg { width: 80px; height: 80px; }
+        .banner-text-content h1 { font-size: 3rem; margin: 0; letter-spacing: 3px; }
 
         .themes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .theme-card { background: white; border: 2px dashed var(--header-blue); border-radius: 25px; padding: 35px 20px; text-align: center; cursor: pointer; transition: 0.3s; font-weight: bold; min-height: 100px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
+        /* --- 页面3：详情页 --- */
         #detail-page { display: none; padding: 130px 20px 40px; }
         .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; max-width: 1400px; margin: 0 auto; }
         .work-box { background: white; border-radius: 25px; padding: 15px; border: 1px solid #ddd; display: flex; flex-direction: column; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer; }
@@ -67,7 +78,7 @@
         .img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .praise-box { font-size: 0.85rem; color: #555; background: #fffde7; padding: 10px; border-radius: 10px; border-left: 4px solid var(--btn-yellow); flex-grow: 1; margin-top: 10px; }
 
-        /* --- 弹窗与切换修正 --- */
+        /* --- 弹窗样式 --- */
         .gallery-modal { display: none; position: fixed; z-index: 100001; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 15, 30, 0.95); backdrop-filter: blur(15px); justify-content: center; align-items: center; }
         .gallery-content { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: center; }
         .gallery-img-container { width: 100%; height: 70vh; display: flex; justify-content: center; align-items: center; padding: 0 20px; box-sizing: border-box; }
@@ -77,6 +88,7 @@
         .prev-arrow { left: 0; border-radius: 0 15px 15px 0; }
         .next-arrow { right: 0; border-radius: 15px 0 0 15px; }
 
+        /* --- 手机端适配：在此处做针对性修改，不影响网页 --- */
         @media (max-width: 1024px) {
             .scrolling-logo { width: 60px; height: 60px; top: 15px; right: 15px; border-radius: 12px; }
             #entrance-page { flex-direction: column; padding: 80px 5% 40px; justify-content: flex-start; }
@@ -85,16 +97,25 @@
             .hero-right .visual-container { width: 220px; height: 220px; margin: 0 auto; }
             .title-main { font-size: 2.2rem; white-space: normal; line-height: 1.2; }
             .title-sub { font-size: 1.2rem; text-align: center; margin: 10px 0 30px; }
-            .top-banner { flex-direction: row; flex-wrap: wrap; padding: 100px 10px 30px; gap: 10px; }
-            .banner-side-doodle { width: 65px; height: 65px; display: block !important; }
-            .banner-side-doodle .earth-svg { width: 45px; height: 45px; }
+
+            /* 手机端定向修复：页面2顶栏单行居中 */
+            .top-banner { padding: 100px 10px 30px; gap: 0; justify-content: space-between; }
+            .banner-side-doodle { width: 60px !important; height: 60px !important; }
+            .banner-text-content { flex: 1; text-align: center; min-width: 0; }
+            .banner-text-content h1 { 
+                font-size: 5.8vw !important; /* 动态缩放 */
+                white-space: nowrap !important; /* 强制不换行 */
+                display: block !important;
+                width: 100% !important;
+                letter-spacing: 1px !important;
+            }
             .nav-arrow { width: 45px; height: 80px; font-size: 35px; }
         }
     </style>
 </head>
 <body>
 
-<img src="1718778821132.jpg" class="scrolling-logo" alt="Logo">
+<img src="1718778821132.jpg" class="scrolling-logo">
 
 <div id="entrance-page">
     <div class="hero-left">
@@ -130,9 +151,7 @@
             <svg class="doodles-svg" viewBox="0 0 400 400"><text x="50" y="250" font-size="140">📰</text></svg>
         </div>
         <div class="banner-text-content">
-            <h1 style="font-size: clamp(1.2rem, 6vw, 3rem); margin: 0; letter-spacing: 3px; white-space: nowrap;">
-    【2025年新闻话题】
-</h1>
+            <h1>【2025年新闻话题】</h1>
             <button onclick="showEntrance()" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:8px 30px; border-radius:50px; cursor:pointer; margin-top:20px;">🏠 返回首页</button>
         </div>
         <div class="visual-container banner-side-doodle">
@@ -153,13 +172,11 @@
 
 <div id="galleryModal" class="gallery-modal">
     <div onclick="closeGallery()" style="position:absolute; top:20px; right:20px; color:white; font-size:45px; cursor:pointer; z-index:100010; background:rgba(255,255,255,0.1); width:60px; height:60px; display:flex; align-items:center; justify-content:center; border-radius:50%;">✕</div>
-    
     <div class="nav-arrow prev-arrow" onclick="changeGallery(-1)">‹</div>
     <div class="nav-arrow next-arrow" onclick="changeGallery(1)">›</div>
-
     <div class="gallery-content" onclick="event.stopPropagation()">
         <div class="gallery-img-container"><img id="galleryImg" class="gallery-img" src=""></div>
-        <div id="gallery-info" style="color:white; text-align:center; padding:20px; z-index:100003;">
+        <div id="gallery-info" style="color:white; text-align:center; padding:20px;">
             <div id="gallery-school" style="font-size:1rem; opacity:0.8; margin-bottom:5px;"></div>
             <div id="gallery-name" style="font-size:1.5rem; font-weight:bold;"></div>
             <div id="gallery-praise" style="color:var(--btn-yellow); margin-top:10px; font-style:italic;"></div>
