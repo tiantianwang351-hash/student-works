@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>《新闻课堂·少年观世界》作品展</title>
+    <style>
+        :root {
+            --mint-bg: #e0f7fa;
+            --brand-blue: #0288d1;
+            --header-blue: #4fc3f7;
+            --btn-yellow: #ffca28;
+            --text-navy: #01579b;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--mint-bg);
+            margin: 0; padding: 0; color: var(--text-navy);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- 首页样式 --- */
+        .scrolling-logo {
+            position: absolute;
+            top: 25px; right: 25px; z-index: 10000; 
+            width: 100px; height: 100px; 
+            border: 4px solid white; border-radius: 20px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            background: white; pointer-events: none;
+        }
+
+        #entrance-page {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 0 8%; box-sizing: border-box;
+            background: radial-gradient(circle at 70% 50%, rgba(79, 195, 247, 0.15), transparent);
+        }
+
+        .hero-left { flex: 1.2; text-align: left; z-index: 10; }
+        .title-main { font-size: 3.8rem; margin: 0; color: var(--text-navy); white-space: nowrap; letter-spacing: 2px; }
+        .title-sub { font-size: 1.6rem; color: #546e7a; margin: 5px 0 40px; text-align: right; max-width: 680px; }
+        .intro-text { line-height: 2; font-size: 1.15rem; color: #37474f; max-width: 620px; text-align: justify; background: rgba(255,255,255,0.4); padding: 30px; border-radius: 20px; }
+        .intro-text p { margin: 0 0 1.2em 0; text-indent: 2em; }
+        .no-wrap { white-space: nowrap; }
+
+        .visual-container { position: relative; display: flex; justify-content: center; align-items: center; animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        .hero-right .visual-container { width: 420px; height: 420px; }
+        .earth-svg { filter: drop-shadow(0 15px 30px rgba(1, 87, 155, 0.1)); width: 100%; height: 100%; }
+        .doodles-svg { position: absolute; top:0; left:0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+
+        .btn-enter { margin-top: 50px; padding: 18px 60px; font-size: 1.3rem; font-weight: bold; color: #5f4300; background: var(--btn-yellow); border: none; border-radius: 100px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 0 #f57f17; }
+
+      /* --- 页面2：主题列表（新版设计） --- */
+        #themes-page {
+            background-color: #e0f7fa; /* 薄荷蓝背景 */
+            min-height: 100vh;
+            padding-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 背景装饰球 */
+        .bg-orb { position: absolute; border-radius: 50%; opacity: 0.1; filter: blur(60px); pointer-events: none; }
+        .orb-1 { top: -100px; right: -100px; width: 400px; height: 400px; background: #4fc3f7; }
+        .orb-2 { bottom: -50px; left: -50px; width: 300px; height: 300px; background: #81c784; }
+
+        /* 顶部报头 */
+        .new-header {
+            max-width: 1200px; margin: 0 auto 50px; padding: 60px 20px 30px;
+            border-bottom: 2px dashed rgba(79, 195, 247, 0.5);
+            display: flex; justify-content: space-between; align-items: flex-end;
+            position: relative; z-index: 10;
+        }
+        
+        .header-left .badge {
+            display: inline-block; padding: 5px 12px; margin-bottom: 10px;
+            background: var(--btn-yellow); color: #5f4300;
+            font-size: 12px; font-weight: bold; border-radius: 20px;
+            box-shadow: 0 2px 0 #f57f17; letter-spacing: 1px;
+        }
+        
+        .header-left h1 {
+            font-size: 4rem; color: var(--text-navy); margin: 0; line-height: 1; letter-spacing: -2px;
+        }
+        .header-left h1 span { color: var(--brand-blue); }
+        .header-left p { color: #455a64; margin-top: 10px; font-size: 1.2rem; font-weight: 300; }
+        
+        .header-right { text-align: right; }
+        .header-right .sub { color: #546e7a; font-size: 0.9rem; opacity: 0.8; }
+        .header-right .main { color: var(--brand-blue); font-size: 1.2rem; font-weight: bold; }
+
+        /* 网格布局：强制一行三个 (PC端) */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 核心修改：强制3列 */
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative; z-index: 10;
+        }
+
+        /* 新版卡片样式 */
+        .theme-card-new {
+            background: white;
+            border: 2px dashed #4fc3f7;
+            border-radius: 25px;
+            height: 260px; /* 固定高度 */
+            padding: 25px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer; transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .theme-card-new:hover {
+            transform: scale(1.02) translateY(-5px);
+            border-style: solid; border-color: var(--brand-blue);
+            box-shadow: 0 10px 30px rgba(1, 87, 155, 0.15);
+        }
+
+        /* 卡片内部元素 */
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .icon-box {
+            width: 45px; height: 45px; background: #e1f5fe; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--brand-blue);
+            transition: 0.3s;
+        }
+        .theme-card-new:hover .icon-box { background: var(--brand-blue); color: white; }
+        
+        .card-meta { display: flex; flex-direction: column; margin-left: 10px; }
+        .en-title { font-size: 10px; font-weight: bold; color: #90a4ae; letter-spacing: 1px; text-transform: uppercase; }
+        .section-tag { font-size: 10px; font-weight: bold; color: var(--btn-yellow); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;}
+
+        .card-number {
+            font-size: 3.5rem; font-weight: 900; color: #e0f7fa; line-height: 0.8;
+            transition: 0.3s; user-select: none;
+        }
+        .theme-card-new:hover .card-number { color: #b3e5fc; }
+
+        .card-content h2 {
+            font-size: 1.8rem; margin: 0 0 10px; color: var(--text-navy);
+            transition: 0.3s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .theme-card-new:hover h2 { transform: translateX(5px); }
+        
+        .deco-line { width: 40px; height: 4px; background: #4fc3f7; border-radius: 10px; margin-bottom: 12px; transition: 0.3s; }
+        .theme-card-new:hover .deco-line { width: 70px; background: var(--btn-yellow); }
+
+        .sub-title { font-size: 0.95rem; font-weight: bold; color: var(--brand-blue); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .desc { font-size: 0.8rem; color: #546e7a; margin-top: 4px; }
+
+        /* 悬停箭头 */
+        .hover-arrow {
+            position: absolute; bottom: 25px; right: 25px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: #f5f5f5; color: #cfd8dc;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+            transition: 0.3s; opacity: 0.5;
+        }
+        .theme-card-new:hover .hover-arrow {
+            background: var(--btn-yellow); color: #5f4300;
+            opacity: 1; box-shadow: 0 4px 0 #f57f17; transform: translateY(-3px);
+        }
+
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            .themes-grid { grid-template-columns: 1fr; } /* 手机单列 */
+            .new-header { flex-direction: column; align-items: flex-start; text-align: left; }
+            .header-right { margin-top: 20px; text-align: left; }
+            .header-left h1 { font-size: 3rem; }
+        }
+
+        /* --- 页面3：详情页 --- */
+        #detail-page { display: none; padding: 130px 20px 40px; }
+        .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; max-width: 1400px; margin: 0 auto; }
+        .work-box { background: white; border-radius: 25px; padding: 15px; border: 1px solid #ddd; display: flex; flex-direction: column; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer; }
+        .img-wrap { width: 100%; height: 230px; background: #f5f5f5; border-radius: 15px; overflow: hidden; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; }
+        .img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .praise-box { font-size: 0.85rem; color: #555; background: #fffde7; padding: 10px; border-radius: 10px; border-left: 4px solid var(--btn-yellow); flex-grow: 1; margin-top: 10px; }
+
+        /* --- 弹窗样式 --- */
+        .gallery-modal { display: none; position: fixed; z-index: 100001; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 15, 30, 0.95); backdrop-filter: blur(15px); justify-content: center; align-items: center; }
+        .gallery-content { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: center; }
+        .gallery-img-container { width: 100%; height: 70vh; display: flex; justify-content: center; align-items: center; padding: 0 20px; box-sizing: border-box; }
+        .gallery-img { max-width: 100%; max-height: 100%; border: 4px solid white; border-radius: 8px; object-fit: contain; }
+        
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 50px; color: white; cursor: pointer; background: rgba(255,255,255,0.1); width: 60px; height: 100px; display: flex; align-items: center; justify-content: center; z-index: 100005; user-select: none; }
+        .prev-arrow { left: 0; border-radius: 0 15px 15px 0; }
+        .next-arrow { right: 0; border-radius: 15px 0 0 15px; }
+
+           /* --- 手机端适配：仅在此处修改，不影响网页端 --- */
+        @media (max-width: 1024px) {
+            .scrolling-logo { width: 60px; height: 60px; top: 15px; right: 15px; border-radius: 12px; }
+            #entrance-page { flex-direction: column; padding: 80px 5% 40px; justify-content: flex-start; }
+            .hero-left { order: 2; width: 100%; text-align: center; }
+            .hero-right { order: 1; width: 100%; margin-bottom: 20px; }
+            .hero-right .visual-container { width: 220px; height: 220px; margin: 0 auto; }
+            .title-main { font-size: 2.2rem; white-space: normal; line-height: 1.2; }
+            .title-sub { font-size: 1.2rem; text-align: center; margin: 10px 0 30px; }
+
+            /* 核心：修复第二页顶栏居中 */
+            .top-banner { padding: 100px 10px 30px; gap: 0; justify-content: space-between; }
+            .banner-side-doodle { width: 60px !important; height: 60px !important; flex-shrink: 0; }
+            
+            .banner-text-content { 
+                flex: 1; 
+                min-width: 0; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; /* 确保内容垂直居中排列 */
+                text-align: center; 
+            }
+            .banner-text-content h1 { 
+                font-size: 5.8vw !important; /* 动态缩小字体 */
+                white-space: nowrap !important; /* 绝对不换行 */
+                display: block !important;
+                width: 100% !important;
+                text-align: center !important;
+                margin: 0 auto !important;
+                letter-spacing: 1px !important;
+            }
+            .banner-text-content button {
+                margin: 15px auto 0 !important; /* 确保返回首页按钮居中 */
+            }
+
+            .nav-arrow { width: 45px; height: 80px; font-size: 35px; }
+        }
+    </style>
+</head>
+<body>
+
+<img src="1718778821132.jpg" class="scrolling-logo">
+
+<div id="entrance-page">
+    <div class="hero-left">
+        <h1 class="title-main">新闻课堂·少年观世界</h1>
+        <div class="title-sub">——2025年新闻课堂作品展</div>
+        <div class="intro-text">
+            <p>当新闻掠过屏幕，一群学生选择了驻足思考。2025年，他们以新闻为起点，用纸笔作回应——从AI崛起、乡村振兴，到大国工程、国际风云……每一份作品都是年轻一代对世界的真诚探寻。</p>
+            <p>这里没有宏大叙事，只有真实温度：小报是思考的轨迹，笔记是理解的尝试，感想是成长的印记。当话题引发创作，<span class="no-wrap">世界便不再遥远。</span></p>
+        </div>
+        <button class="btn-enter" onclick="showThemes()">点击进入展廊</button>
+    </div>
+    <div class="hero-right">
+        <div class="visual-container">
+            <svg class="earth-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="48" fill="#4fc3f7"/>
+                <path d="M30 30 Q 40 20 55 25 T 80 40 T 70 70 Q 55 85 35 75 T 25 50 Z" fill="#81c784" opacity="0.9"/>
+                <path d="M60 15 Q 75 10 85 25 T 75 45 Z" fill="#a5d6a7" opacity="0.8"/>
+            </svg>
+            <svg class="doodles-svg" viewBox="0 0 400 400">
+                <text x="40" y="110" font-size="65">📰</text>
+                <text x="310" y="130" font-size="70">🎤</text>
+                <text x="300" y="330" font-size="55">✏️</text>
+                <text x="50" y="320" font-size="80">📖</text>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div id="themes-page" style="display:none;">
+    <!-- 背景装饰 -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <!-- 新版报头 -->
+    <div class="new-header">
+        <div class="header-left">
+            <div class="badge">2025 SPECIAL EDITION</div>
+            <h1>新闻<span>课堂</span></h1>
+            <p>少年观世界 · 读懂时代的脉搏</p>
+        </div>
+        <div class="header-right">
+            <p class="main">作品展</p>
+            <p class="sub">Visual Learning Project</p>
+            <button onclick="showEntrance()" style="margin-top:10px; background:none; border:1px solid var(--brand-blue); color:var(--brand-blue); padding:5px 15px; border-radius:20px; cursor:pointer; font-size:0.8rem;">← 返回首页</button>
+        </div>
+    </div>
+
+    <!-- 列表容器 -->
+    <div class="themes-grid" id="themes-container">
+        <!-- JS将在这里生成卡片 -->
+    </div>
+</div>
+<div id="detail-page">
+    <div style="max-width:1400px; margin:0 auto 30px; text-align:center;">
+        <button class="btn-enter" style="margin:20px; padding:10px 30px; font-size:1rem;" onclick="showThemes()">← 返回展廊</button>
+        <h2 id="theme-title" style="color:var(--brand-blue); font-size:1.8rem;"></h2>
+    </div>
+    <div class="works-grid" id="works-container"></div>
+</div>
+
+<div id="galleryModal" class="gallery-modal">
+    <div onclick="closeGallery()" style="position:absolute; top:20px; right:20px; color:white; font-size:45px; cursor:pointer; z-index:100010; background:rgba(255,255,255,0.1); width:60px; height:60px; display:flex; align-items:center; justify-content:center; border-radius:50%;">✕</div>
+    <div class="nav-arrow prev-arrow" onclick="changeGallery(-1)">‹</div>
+    <div class="nav-arrow next-arrow" onclick="changeGallery(1)">›</div>
+    <div class="gallery-content" onclick="event.stopPropagation()">
+        <div class="gallery-img-container"><img id="galleryImg" class="gallery-img" src=""></div>
+        <div id="gallery-info" style="color:white; text-align:center; padding:20px;">
+            <div id="gallery-school" style="font-size:1rem; opacity:0.8; margin-bottom:5px;"></div>
+            <div id="gallery-name" style="font-size:1.5rem; font-weight:bold;"></div>
+            <div id="gallery-praise" style="color:var(--btn-yellow); margin-top:10px; font-style:italic;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const allThemesData = {
+        1: {
+            title: "主题01 DeepSeek横空出世，意味着什么？",
+            works: [
+                { name: "奚嘉怡", school: "上海师范大学附属金山前京中学", file: "上海师范大学附属金山前京中学 奚嘉怡.jpg", praise: "色彩鲜艳，鲸鱼形象生动，排版逻辑满分！" },
+                { name: "方毓馨", school: "上海师范大学附属金山前京中学", file: "上海师范大学附属金山前京中学 方毓馨.jpg", praise: "对AI原理的拆解细致，展现了严谨的科学态度！" },
+                { name: "付玥", school: "上海市闵行区君莲学校", file: "junlian01.jpg", praise: "笔记工整，彩色装饰充满童趣，总结感悟非常深刻！" },
+                { name: "谭思萌", school: "上海市闵行区君莲学校", file: "junlian02.jpg", praise: "重点突出，对DeepSeek的思考很有深度，观察力强！" },
+                { name: "张梵馨", school: "上海市虹口实验学校", file: "上海市虹口实验学校 张梵馨.jpg", praise: "学习单完成出色，思维导图清晰，习惯非常好！" },
+                { name: "顾琳菲", school: "上海市浦东新区金桥镇中心小学", file: "上海市浦东新区金桥镇中心小学 顾琳菲.jpg", praise: "用色区分重点，态度认真，收获写得非常详尽！" },
+                { name: "张李琪", school: "上海市嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 张李琪.jpg", praise: "时政随笔有见地，展现了中学生敏锐的观察力！" },
+                { name: "宣璟怡", school: "上海市浦东新区建平临港小学", file: "上海市浦东新区建平临港小学 宣璟怡.jpg", praise: "文章精彩，字里行间充满了对国产科技崛起的自豪！" },
+                { name: "陈沁瑜", school: "上海市西林中学", file: "上海市西林中学 陈沁瑜.jpg", praise: "条理清晰，文字功底扎实，对AI普及的思考很到位！" },
+                { name: "毛诗雯", school: "上海市西林中学", file: "上海市西林中学 毛诗雯.png", praise: "感悟深刻，展现了对AI未来的理性期待与辩证思考！" },
+                { name: "蒋玉婷", school: "上海市蔡路中学", file: "上海市蔡路中学 蒋玉婷.png", praise: "观点独到，提醒我们要保持判断力，非常有前瞻性！" },
+                { name: "高俊宸", school: "上海市黄楼中学", file: "上海市黄楼中学 高俊宸.jpg", praise: "笔记逻辑性极强，把技术优势分析得头头是道！" },
+                { name: "夏姝砚", school: "上海市松江一中", file: "上海市松江一中 夏姝砚.png", praise: "辩证看待技术，逻辑严密，展现了卓越的学术潜质！" },
+                { name: "施雅媛", school: "华东师范大学第二附属中学前滩学校", file: "qian01.jpg", praise: "小鲸鱼生动可爱，梳理DeepSeek发展史逻辑非常清晰！" },
+                { name: "倪羽恬", school: "华东师范大学第二附属中学前滩学校", file: "qian02.jpg", praise: "极具未来感的插画，深度剖析了行业转变与中国AI新篇章！" },
+                { name: "张洢晨", school: "华东师范大学第二附属中学前滩学校", file: "qian03.jpg", praise: "视觉呈现力极佳，准确对比了AI的便利与风险，设计感十足！" }
+            ]
+        },
+        2: { 
+            title: "主题02 说说大闹春节档的《哪吒2》", 
+            works: [ 
+                { name: "高昱哲", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 高昱哲.png", praise: "全方位解析了电影的成功密码，复盘出色！" },
+                { name: "孙祎晨", school: "复旦大学附属闵行实验学校", file: "复旦大学附属闵行实验学校 孙祎晨.png", praise: "剪纸风创意惊艳，传统文化融合度极高！" },
+                { name: "邢恺恩", school: "上海民办圣华紫竹双语学校", file: "上海民办圣华紫竹双语学校 邢恺恩.jpg", praise: "画作极具张力，捕捉到了小哪吒那股不屈的斗志！" },
+                { name: "张佑琪", school: "上海市蔡路中学", file: "上海市蔡路中学 张佑琪.png", praise: "手绘细节丰富，感悟深刻，展现英雄本色。" },
+                { name: "蒲娅楠", school: "上海市嘉定区练川实验学校", file: "上海市嘉定区练川实验学校 蒲娅楠.jpg", praise: "色彩鲜亮，诠释了友谊与勇气的力量。" },
+                { name: "沈梦婕", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（小学部）沈梦婕.png", praise: "记录详尽，‘支持国产’的号召真挚有力。" },
+                { name: "姚欣依", school: "上海市浦东新区建平临港小学", file: "上海市浦东新区建平临港小学 姚欣依.png", praise: "生动捕捉了哪吒直面困难的英姿，充满动感。" },
+                { name: "刘梓萱", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 刘梓萱.jpg", praise: "逻辑图展现了超强的复盘与数据总结能力！" },
+                { name: "周雨潼", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（中学部） 周雨潼.jpg", praise: "海报排版视觉冲击力强，人物性格跃然纸上。" },
+                { name: "吴诗睿", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（小学部）吴诗睿.png", praise: "细致拆解了电影中的国风元素，感悟独到。" },
+                { name: "牛杨淋荟", school: "上海市崇明中学附属东门中学", file: "上海市崇明中学附属东门中学 牛杨淋荟.jpg", praise: "深度探讨成长主题，笔触细腻，视野宏大。" },
+                { name: "潘悦嘉", school: "上海市浦东新区建平临港小学", file: "上海市浦东新区建平临港小学 潘悦嘉.jpg", praise: "拼贴设计极具巧思，全方位展示了少年英雄形象。" },
+                { name: "宣璟怡", school: "上海市浦东新区建平临港小学", file: "上海市浦东新区建平临港小学 宣璟怡.jpg", praise: "以老师视角进行现代演绎，充满了童趣与爱心。" },
+                { name: "周幼玟", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 周幼玟.jpg", praise: "特写生动灵动，对电影精神的解读热血沸腾。" },
+                { name: "颜睿希", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 颜睿希.jpg", praise: "画作充满力量感，展现了少年顽强不屈的斗志。" },
+                { name: "蔡毓翎", school: "上海市莘城学校", file: "上海市莘城学校 蔡毓翎.jpg", praise: "六大关键点总结精辟，图文互动非常精彩。" },
+                { name: "胡云翼", school: "上海市莘城学校", file: "上海市莘城学校 胡云翼.jpg", praise: "构图宏大，画出了哪吒重生抗争的磅礴气势。" },
+                { name: "陈嫣胤", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 陈嫣胤.png", praise: "创意独特，生活气息与电影精神巧妙结合。" },
+                { name: "陈嘉懿", school: "上海市浦东新区锦绣小学", file: "上海市浦东新区锦绣小学 陈嘉懿.jpg", praise: "细腻笔触构建英雄共鸣，展现深厚绘画功底。" },
+                { name: "刘柏锋", school: "上海市浦东新区建平永宁小学", file: "上海市浦东新区建平永宁小学 刘柏锋.jpg", praise: "逻辑严密，将传统英雄精神代入现代校园情境。" },
+                { name: "姚玥", school: "上海市莘城学校", file: "上海市莘城学校 姚玥.jpg", praise: "画风干练帅气，精准捕捉了角色的英勇神态。" },
+                { name: "陈玥岚", school: "上海市莘城学校", file: "上海市莘城学校 陈玥岚.jpg", praise: "分析透彻，思维导图清晰展示了走出心魔的过程。" },
+                { name: "陈冰冰", school: "上海市浦东新区三林实验小学", file: "上海市浦东新区三林实验小学 陈冰冰.png", praise: "视野宏大，将文化自信与国际时事完美结合。" },
+                { name: "费曜恒", school: "上海市西林中学", file: "上海市西林中学 费曜恒.jpg", praise: "分栏排版有序，角色性格分析一目了然。" },
+                { name: "周心怡", school: "上海市西林中学", file: "上海市西林中学 周心怡.jpg", praise: "色彩碰撞强烈，极具叙事张力与视觉美感。" },
+                { name: "张诗琪", school: "上海市西林中学", file: "上海市西林中学 张诗琪.png", praise: "画出了哪吒的灵动，传达了成长中的不屈精神。" },
+                { name: "张玮菡", school: "上海市实验学校东校", file: "上海市实验学校东校 张玮菡.png", praise: "三段式深度剖析，将少年热血刻画得入木三分。" }
+            ] 
+        },
+        3: { 
+            title: "主题03 特朗普二次上台后到底干了些什么？", 
+            works: [ 
+                { name: "包悠乐", school: "上海市浦东新区凌兆小学", file: "上海市浦东新区凌兆小学 包悠乐.png", praise: "站在人类命运共同体高度，反思政策的复杂影响。" },
+                { name: "周熙凯", school: "上海市实验学校东校", file: "上海市实验学校东校 周熙凯.png", praise: "绘图直观犀利，精准捕捉了关税的‘双刃剑’效应。" },
+                { name: "高菁宁", school: "上海市松江一中", file: "上海市松江一中 高菁宁.png", praise: "文章体现了开阔的国际视野与对合作发展的思考。" },
+                { name: "沈思齐", school: "上海市实验学校东校", file: "上海市实验学校东校 沈思齐.png", praise: "逻辑分析出色，通过经济挑战计算看透政策背后逻辑。" },
+                { name: "王轩辕", school: "上海市浦东新区凌兆小学", file: "上海市浦东新区凌兆小学 王轩辕.png", praise: "呼吁和平与共享，家国情怀与新闻敏锐度兼备。" },
+                { name: "陈彦昕", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 陈彦昕.png", praise: "学习单整理详实，清晰归纳了多项重磅政策动向。" }
+            ] 
+        },
+        4: { 
+            title: "主题04 乡村振兴，它为什么对中国很重要？", 
+            works: [ 
+                { name: "戚芸晟", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 戚芸晟.png", praise: "紧扣新质生产力主题，展现了对现代农业的深刻理解。" },
+                { name: "尹美茜", school: "上海市松江一中", file: "上海市松江一中 尹美茜.png", praise: "文字优美立意高，将科技突破与乡土情怀完美结合。" },
+                { name: "何承霖", school: "上海宝山区世外学校", file: "上海宝山区世外学校 何承霖.png", praise: "以县委书记视角模拟规划，文旅融合思考具前瞻性。" },
+                { name: "成林泽", school: "上海宝山区世外学校", file: "上海宝山区世外学校 成林泽.png", praise: "精准分析县域瓶颈，宏微观结合的经济思维非常扎实。" },
+                { name: "李鑫淼", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 李鑫淼.png", praise: "图文并茂，生动记录了‘粉红兽医’白婳的励志故事。" },
+                { name: "迪丽努尔", school: "上海市松江一中", file: "上海市松江一中 迪丽努尔.png", praise: "立意高远，深刻论述了乡村振兴在全球化视野下的意义。" },
+                { name: "师晨昕", school: "山西省平遥中学", file: "山西省平遥中学 师晨昕.png", praise: "跨时空对比技术革命，对就业问题的洞察极具深度。" },
+                { name: "袁梦依", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（小学部）袁梦依.png", praise: "将古诗意境融入现代政策，笔触清新，热爱土地。" },
+                { name: "周静晗", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（小学部） 周静晗.png", praise: "全方位解读中央文件，笔记条理清晰，记录非常详实。" },
+                { name: "陈月灵", school: "上海市实验学校东校", file: "上海市实验学校东校 陈月灵.png", praise: "思维导图形式明了，精准捕捉了农业高科技关键点。" }
+            ] 
+        },
+        5: {
+            title: "主题05 俄乌局势背后的世界大变局",
+            works: [
+                { name: "王奕瑶", school: "上海市松江一中", file: "上海市松江一中 王奕瑶.png", praise: "深刻剖析北约裂痕与‘自救’行动，文笔冷静且具全球视野。" },
+                { name: "范希成", school: "苏州市立达中学校", file: "苏州市立达中学校 范希成.png", praise: "以调停外交官视角切入，逻辑严密地阐述了和平解决争端的中国方案。" },
+                { name: "李宜浓", school: "上海市松江一中", file: "上海市松江一中 李宜浓.png", praise: "对12点立场文件解读到位，展现了作为负责任大国的担当。" },
+                { name: "蔡淑如", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 蔡淑如.jpg", praise: "深刻认识地缘政治复杂性，对‘人类命运共同体’感悟至深。" },
+                { name: "王紫晨", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 王紫晨.jpg", praise: "‘像冲浪者读懂海浪’，金句频出，观察国际局势视角独特。" },
+                { name: "热比耶", school: "上海市松江一中", file: "上海市松江一中 热比耶.png", praise: "通过对外交细节复盘，思考‘弱国无外交’现状，具有强烈人文关怀。" }
+            ]
+        },
+        6: {
+            title: "主题06 2025年两会该关注什么？",
+            works: [
+                { name: "张苏蒙", school: "上海市浦东新区凌兆小学", file: "上海市浦东新区凌兆小学 张苏蒙.jpg", praise: "关注未成年人身心健康，提出AI屏蔽游戏等建设性建议，配图生动！" },
+                { name: "刘梓萱", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 刘梓萱.jpg", praise: "笔记重点突出，用红蓝双色清晰标注了两会性质，学习态度极其认真。" },
+                { name: "李鑫淼", school: "上海市金山区第二实验小学", file: "lixinmiao2.png", praise: "画出了对‘AI走进学校’的憧憬，AR地理、3D生物课设想极具创意。" },
+                { name: "张笑语", school: "上海市川沙中学友仁分校", file: "上海市川沙中学友仁分校 张笑语.png", praise: "精准捕捉‘新质生产力’与‘教育供给改革’，展现了高中生敏锐的洞察力。" },
+                { name: "严苏雨", school: "上海市川沙中学", file: "上海市川沙中学 严苏雨.png", praise: "架构严谨，通过‘三驾马车’分析经济动能，政经基础非常扎实。" },
+                { name: "王静怡", school: "上海市川沙中学", file: "上海市川沙中学 王静怡.png", praise: "手工感十足的版面设计，将人大选举流程梳理得一目了然，非常美观。" },
+                { name: "吴晓雯", school: "上海市川沙中学", file: "上海市川沙中学 吴晓雯.jpg", praise: "横向对比清晰，底部人民大会堂简笔画为作品增添了庄重感。" },
+                { name: "曾庆诚", school: "上海市进才中学", file: "上海市进才中学 曾庆诚.png", praise: "‘聚焦两会’字体设计醒目，从民生到国防视野开阔，色彩饱和度极高。" },
+                { name: "早哈拉古丽", school: "上海市松江一中", file: "zaohalaguli.png", praise: "将‘新质生产力’与个人未来规划相结合，体现了极强的社会责任感。" },
+                { name: "梅依清", school: "上海市松江一中", file: "meiyiqing.png", praise: "聚焦6G技术与职普融合改革，数据详实，描绘了生动的未来教育蓝图。" },
+                { name: "顾斌雨", school: "上海市西林中学", file: "gubinyu.png", praise: "定义概括精准，版面工整重点突出，是极高质量的学习随笔。" },
+                { name: "孙启恒", school: "苏州市立达中学校", file: "苏州市立达中学校 孙启恒.png", praise: "关注宏观政策的同时，更聚焦校园心理健康，作品充满了人文温度。" },
+                { name: "王语默", school: "上海市西林中学", file: "上海市西林中学 王语默.png", praise: "用流畅书法笔触梳理两会核心职能，展现了卓越的学科素养。" },
+                { name: "施延", school: "上海市普陀区教育学院附属中学", file: "shiyan.png", praise: "论述从‘知识传承’转向‘创造力觉醒’，金句频出，极具深度。" }
+            ]
+        },
+        7: {
+            title: "主题07 体重管理年，当个健康“小吃货”",
+            works: [
+                { name: "潘昱忱", school: "复旦大学附属闵行实验学校", file: "复旦大学附属闵行实验学校  潘昱忱.jpg", praise: "小报设计感极强，‘彩虹原则’和比例图示让健康饮食一目了然！" },
+                { name: "顾墨芸", school: "上海市浦东新区建平实验小学", file: "上海市浦东新区建平实验小学 顾墨芸.png", praise: "人体结构图解创意十足，生动展示了保护肠胃健康的科学方法。" },
+                { name: "杨馨乐", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学  杨馨乐.png", praise: "数字绘画风格清新，完美诠释了用智慧平衡美食与健康的理念。" },
+                { name: "张佑佳", school: "上海市浦东新区康桥小学", file: "上海市浦东新区康桥小学 张佑佳.jpg", praise: "人物形象元气满满，‘吃出彩虹能量’的口号极具号召力！" },
+                { name: "颜睿琦", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 颜睿琦.jpg", praise: "手绘插画童趣十足，饮食原则归纳得非常细致，习惯真好！" },
+                { name: "孙祎晨", school: "复旦大学附属闵行实验学校", file: "sunyichen3.png", praise: "笔记极其专业，通过数据对比深刻揭示了体重管理的必要性。" },
+                { name: "钱冠成", school: "上海市嘉定区练川实验学校", file: "上海市嘉定区练川实验学校 钱冠成.jpg", praise: "思维导图逻辑严密，将饮食模式与自控力培养结合得非常紧密。" },
+                { name: "徐若宁", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 徐若宁.jpg", praise: "色彩碰撞强烈，构图宏大，视觉化地对比了健康与添加剂的选择。" },
+                { name: "盛凌云", school: "上海市莘城学校", file: "上海市莘城学校  盛凌云.png", praise: "利用鲜明的‘红绿灯’分类法，直观展示了科学选择健康食物的技巧。" },
+                { name: "任晨汐", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 任晨汐.png", praise: "时政评论逻辑严密，探讨了健康饮食对个人成长及社会的深远影响。" },
+                { name: "于振华", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 于振华.jpg", praise: "画面温馨，强调了合理膳食与规律运动相结合的科学生活方式。" },
+                { name: "周子宸", school: "上海市莘城学校", file: "上海市莘城学校 周子宸.jpg", praise: "对比构图清晰有力，展现了对‘管住嘴、迈开腿’科学原则的理解。" },
+                { name: "桂忻怡", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 桂忻怡.png", praise: "立意高远，从国家发展高度审视青少年体重管理，观点具洞察力。" },
+                { name: "寿欣怡", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 寿欣怡.png", praise: "文章逻辑清晰，有力呼吁全社会共同筑起健康成长的防护墙。" },
+                { name: "李瑾萱", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 李瑾萱.png", praise: "以‘食育’为核心，反思了现代生活习惯对健康的影响，富有启发性。" },
+                { name: "华辰蕾", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 华辰蕾.png", praise: "精准指出体重管理关键在于理性认知而非盲目节食，展现了科学素养。" },
+                { name: "李鑫然", school: "上海市莘城学校", file: "上海市莘城学校 李鑫然.png", praise: "‘胡萝卜’版式创意十足，将饮食金字塔融入趣味设计，科普效果极佳。" },
+                { name: "陈奕希", school: "上海市莘城学校", file: "上海市莘城学校 陈奕希.jpg", praise: "对摄入量和比例的精准标注体现了严谨态度，不愧是‘健康执行官’。" },
+                { name: "黄皓宇", school: "上海市市八初级中学", file: "上海市市八初级中学 黄皓宇.png", praise: "图文排版错落有致，通过生动的手绘展示了对健康生活方式的深入理解。" },
+                { name: "马宸希", school: "上海市市八初级中学", file: "上海市市八初级中学 马宸希.png", praise: "作品逻辑分明，将‘减重’科学转化为可执行的日常清单，极具实用价值。" },
+                { name: "徐锋炜", school: "上海市市八初级中学", file: "上海市市八初级中学 徐锋炜.png", praise: "构思新颖，通过对比分析展示了科学饮食对青少年成长的重要性。" },
+                { name: "苏天童", school: "上海市松江一中", file: "上海市松江一中  苏天童.png", praise: "深度剖析了‘肥胖焦虑’与健康管理的界限，文字老练且充满辩证思维。" },
+                { name: "祖丽阿娅", school: "上海市松江一中", file: "上海市松江一中 祖丽阿娅.png", praise: "从跨文化视角解读健康饮食，视野开阔，展现了优秀的资料整合能力。" },
+                { name: "薛欣悦", school: "上海市亭新中学", file: "上海市亭新中学 薛欣悦.png", praise: "版面设计活泼，用色彩鲜明的插画生动诠释了‘三减三健’的核心内涵。" },
+                { name: "沈明哲", school: "上海市致远中学", file: "上海市致远中学 沈明哲.png", praise: "学习笔记记录详实，精准抓住了体重管理政策背后的社会意义。" },
+                { name: "汤乐馨", school: "上海市致远中学", file: "上海市致远中学 汤乐馨.jpg", praise: "作品充满了生活气息，将健康食谱与艺术绘画完美结合，赏心悦目。" },
+                { name: "顾诗佳", school: "苏州市立达中学校", file: "苏州市立达中学校 顾诗佳.png", praise: "思维导图架构清晰，不仅关注饮食，更强调了心态在健康管理中的作用。" }
+            ]
+        },
+8: {
+            title: "主题08 网络开盒，到底谁是受害者？",
+            works: [
+                { name: "孙祎辰", school: "复旦大学附属闵行实验学校", file: "sunyichen2.png", praise: "作品极具视觉冲击力，通过色彩对比揭示了网络暴力背后的隐形枷锁，引人深思。" },
+                { name: "王佳倩", school: "上海市崇明区实验中学", file: "上海市崇明区实验中学 王佳倩.png", praise: "从法律和道德双重维度剖析‘开盒’危害，条理清晰，展现了中学生强烈的法治意识。" },
+                { name: "叶诗莹", school: "上海市浦东新区建平实验小学", file: "上海市浦东新区建平实验小学 叶诗莹.jpg", praise: "构图精妙，将虚拟世界的攻击与现实伤害联系在一起，生动传达了拒绝网暴的主旨。" },
+                { name: "王轩辕", school: "上海市浦东新区凌兆小学", file: "wangxuanyuan2.png", praise: "文章立意新颖，呼吁大家在信息时代保持理性，保护个人隐私，不做网络冷暴力的推手。" },
+                { name: "张舜阳", school: "上海市浦东新区凌兆小学", file: "上海市浦东新区凌兆小学 张舜阳.png", praise: "思维导图设计精炼，精准梳理了网络开盒的成因与后果，逻辑性极强。" },
+                { name: "程然", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 程然.png", praise: "用笔触描绘出受害者的无助，画面充满情感共鸣，呼唤网络空间的善意与尊重。" },
+                { name: "杨馨乐", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 杨馨乐2.jpg", praise: "版面排版活泼而不失严肃，通过生动的案例分析，让保护隐私的观念深入人心。" },
+                { name: "毛炜彤", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 毛炜彤.png", praise: "色彩鲜明，将复杂的社会现象具象化为易懂的图画，非常有创意的科普小报。" },
+                {  name: "邱羽晨", school: "上海市亭新中学",  file: "上海市亭新中学  邱羽晨.png", praise: "手绘的‘网络安全探索指南’极具创意，将防御措施与视觉设计完美结合，警示意义十足！" },
+                {  name: "刘建楷", school: "上海市松江一中", file: "上海市松江一中  刘建楷.png", praise: "文章深刻揭示了青少年对身份认同的渴望与安全边界的矛盾，呼吁建立更有温度的社交机制。" },
+                { name: "吴心成", school: "上海市松江一中", file: "上海市松江一中 吴心成.png", praise: "精准运用‘数字劳工’‘法律荒漠’等概念，探讨了Z世代建立内心道德律令的重要性，极具思辨力。" },
+                {name: "袁海仪", school: "上海市松江一中", file: "上海市松江一中 袁海仪.png", praise: "全方位解读了媒介素养的内涵，从批判性思维到实践参与，为构建清朗网络环境提供了理性方案。" },
+            ]
+        },
+        9: {
+            title: "主题09 缅甸地震，让我们来说说缅甸",
+            works: [
+                { name: "陈彦卓", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 陈彦卓.png", praise: "关注点非常独特！通过“地下龙”的故事，深情讲述了中缅友谊与奋斗精神，文字充满敬意。" },
+                { name: "刘馨泽", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 刘馨泽.png", praise: "笔记条理清晰，多色笔运用得当，牢牢掌握了“黄金72小时”等关键防灾知识，非常实用！" },
+                { name: "陈月灵", school: "上海市实验学校东校", file: "上海市实验学校东校 陈月灵2.png", praise: "知识点梳理得井井有条，特别是对搜救科技“蛇眼探测仪”的记录，展现了细致的观察力。" },
+                { name: "江思禹", school: "上海市实验学校东校", file: "上海市实验学校东校 江思禹.png", praise: "视野开阔，不仅记录了地震灾情，更生动讲述了建设者在艰苦环境下的奋斗故事，感人至深。" },
+                { name: "蔡菱芸", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 蔡菱芸.png", praise: "从古老传说讲到科学避险，数据引用详实，最后的逃生小贴士充满了对他人的关爱。" },
+                { name: "董婉清", school: "上海市市八初级中学", file: "上海市市八初级中学 董婉清.png", praise: "版面设计精美大气，图文并茂地分析了地震破坏力与地缘政治关系，展现了极高的综合素养。" },
+                { name: "王宥诚", school: "上海市市八初级中学", file: "上海市市八初级中学  王宥诚.png", praise: "地理视角极佳！通过手绘地图和深度分析，精准揭示了天灾背后的人口与地质因素，逻辑严密。" }
+            ]
+        },
+        10: {
+            title: "主题10 美国关税大棒，把世界打入乱纪元",
+            works: [
+                { name: "严晨睿", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（小学部） 严晨睿.png", praise: "笔记重点突出，用醒目的艺术字强调了“关税”“黄金”等核心词汇，对政策影响的分析条理清晰。" },
+                { name: "孙沐祺", school: "上海市实验学校东校", file: "上海市实验学校东校 孙沐祺.png", praise: "标题生动形象，通过流程图清晰地推导了加征关税对经济链条的连锁反应，逻辑性强。" },
+                { name: "刘胤兮", school: "上海市实验学校东校", file: "上海市实验学校东校 刘胤兮.png", praise: "视角独特，关注到关税战对生态环境的潜在影响，图文结合分析了经济链条的传导机制。" },
+                { name: "闫逸凡", school: "上海市黄楼中学", file: "上海市黄楼中学 闫逸凡.png", praise: "笔记条理清晰，对“贸易顺差/逆差”的解释准确，从历史视角得出“只有自身强大，才不畏惧打压”的深刻结论。" },
+                { name: "黄诗茹", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 黄诗茹.png", praise: "设计精美，聚焦“美印贸易”这一独特视角，全面分析了各方反应和未来走向，展现了广阔的国际视野。" },
+                { name: "俞果", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（小学部）俞果.png", praise: "构思巧妙，从“黄金价格上涨”切入讨论关税问题，图文并茂，将复杂的经济现象解释得生动有趣。" },
+                { name: "黄墨", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 黄墨.png", praise: "运用“波兰球”漫画形式生动演绎了国际贸易关系，画风可爱但寓意深刻，对全球供应链韧性的思考很有见地。" },
+                { name: "张梓玥", school: "上海市市八初级中学", file: "上海市市八初级中学 张梓玥.png", praise: "动漫插画非常吸睛！对贸易专业术语的解读准确，指出关税战是“数字游戏”并将负担转嫁给两国人民，观点犀利。" }
+            ]
+        },
+        11: {
+            title: "主题11 越南、马来西亚、柬埔寨，中国的周边格局与世界格局会如何深度联动？",
+            works: [
+                { name: "梁倚婷", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 梁倚婷.png", praise: "笔记深度极佳！敏锐地捕捉到了‘亚洲安全模式’与‘关税大棒’的对比，展现了成熟的国际政治视角。" },
+                { name: "沈思辰", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 沈思辰.png", praise: "书写工整，不仅记录了‘海上丝绸之路’的历史渊源，还细致标注了各国人口数据，学习态度严谨。" },
+                { name: "付雨鑫", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 付雨鑫.png", praise: "观察力独特，生动总结了越南的‘三瘦’特点，并深刻理解了国与国之间平等相待的重要性。" },
+                { name: "蒋萌萌", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 蒋萌萌.png", praise: "故事感强！通过方侨生爷爷的奋斗史切入宏大主题，生动诠释了‘丝路精神’在民间的传承。" },
+                { name: "孙祎辰", school: "复旦大学附属闵行实验学校", file: "sunyichen4.png", praise: "版面设计堪称完美，像一份专业的‘外交小报’，四个维度的深度设问展现了极强的逻辑思维能力。" },
+                { name: "陈雅宁", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 陈雅宁.png", praise: "‘文化相通’四个大字振聋发聩，重点突出，深刻领悟了民心相通是外交关系的基石。" },
+                { name: "赵若祺", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 赵若祺.png", praise: "条理清晰的清单式笔记，精准概括了东南亚的地缘优势和越南的改革历程，知识点密度很高。" },
+                { name: "杨倚涵", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 杨倚涵.png", praise: "思维导图构建出色，将地缘政治、经济互补与文化认同有机串联，展现了系统的全局观。" },
+                { name: "周思嘉", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 周思嘉.png", praise: "笔记逻辑清晰，特别关注了“关税大棒”下的国际局势，总结了越南的“三瘦”特点，条理分明。" },
+                { name: "陈骏彦", school: "上海市市八初级中学", file: "上海市市八初级中学 陈骏彦.jpg", praise: "艺术字标题非常吸睛！详细列举了三国的人口面积数据，并深刻分析了劳动密集型产业的特点。" },
+                { name: "程诗华", school: "上海市实验学校东校", file: "上海市实验学校东校 程诗华.png", praise: "重点抓得准！列举了金港高速、雅万高铁等具体基建项目，生动展示了中国与东南亚的紧密合作。" }
+            ]
+        },
+12: {
+            title: "主题12 35岁的浦东，中国改革开放的传奇故事",
+            works: [
+                { name: "闫逸凡", school: "上海市黄楼中学", file: "上海市黄楼中学 闫逸凡2.png", praise: "思维导图架构清晰，深刻理解了浦东开发“面向世界，服务全国”的战略意义，总结能力很强。" },
+                { name: "廖景艺", school: "上海市实验学校东校", file: "上海市实验学校东校 廖景艺.png", praise: "独特的“从人力到算力”视角！结合大桥建设的时间轴，生动展现了浦东35年的跨越式发展。" },
+                { name: "孙祎辰", school: "复旦大学附属闵行实验学校", file: "sunyichen5.png", praise: "图文并茂的精美小报！将南浦、杨浦等大桥的建设历程与浦东巨变完美融合，版面设计很专业。" },
+                { name: "陈雨绮", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 陈雨绮.png", praise: "海报设计大气磅礴！醒目的标题配合地标建筑剪影，用数据说话，直观展现了浦东的经济腾飞。" },
+                { name: "陈雅宁", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 陈雅宁2.png", praise: "从“桥梁之父”林元培的故事中汲取精神力量，这种见微知著的学习态度真棒！" },
+                { name: "潘晓艺", school: "上海市浦东新区林苑小学", file: "上海市浦东新区林苑小学 潘晓艺.png", praise: "构思极具巧思！用祖孙两代人的对比和穿越时空的合影，生动刻画了浦东的沧桑巨变，画面温馨动人。" },
+                { name: "洪诗翎", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校  洪诗翎.png", praise: "色彩丰富，构图精美！用画笔致敬“桥梁之父”林元培，展现了对城市建设者工匠精神的崇高敬意。" },
+                { name: "沈思齐", school: "上海市实验学校东校", file: "上海市实验学校东校  沈思齐2.png", praise: "笔记条理清晰，详细记录了四座大桥的建成时间与保税区知识，展现了严谨细致的求知欲。" }
+            ]
+        },
+13: {
+            title: "主题13 西班牙大停电，都是绿色能源惹的祸？",
+            works: [
+                { name: "刘梓萱", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 刘梓萱2.png", praise: "笔记逻辑清晰，绘制的“能源不可能三角”图示非常专业，还关注到了“0.1秒追光者”张黎明，细节满分。" },
+                { name: "李梦寒", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 李梦寒.png", praise: "总结了停电的六大原因，图文并茂地解析了能源转型痛点，最后的致谢充满了对电力工作者的敬意。" },
+                { name: "何承霖", school: "上海宝山区世外学校", file: "上海宝山区世外学校 何承霖2.png", praise: "结合上海生活实际，对景观灯光与节能环保的辩证思考非常深刻，提出了“人是关键”的独到见解。" },
+                { name: "孙祎辰", school: "复旦大学附属闵行实验学校", file: "sunyichen6.png", praise: "版面设计精美，拟人化的地球插画充满童趣，清晰梳理了从化石能源到清洁能源的转型路径。" },
+                { name: "王艺璇", school: "山西省平遥中学", file: "山西省平遥中学 王艺璇.png", praise: "将国际视野聚焦家乡平遥，提出了“光伏+农业”和“零碳景区”的具体方案，学以致用的典范。" },
+                { name: "李瑞琳", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 李瑞琳.png", praise: "数据引用详实，准确捕捉了“AI降本增效”的关键点，对上海供电可靠性的分析充满了自豪感。" },
+                { name: "钱靖夏", school: "山西省平遥中学", file: "山西省平遥中学 钱靖夏.png", praise: "深刻分析了平遥古城“文旅+新能源”的特色路径，条理清晰地破解了家乡的“能源三角”难题。" },
+                { name: "梁校瑜", school: "山西省平遥中学", file: "山西省平遥中学 梁校瑜.png", praise: "笔触流畅，理论深度极佳，从“能源三难”上升到国家治理层面的思考，展现了宏大的格局。" },
+                { name: "苗嘉琪", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 苗嘉琪.jpg", praise: "笔记对比鲜明，从西班牙停电联想到上海的“0次停电”，对FA自动化系统的记录展现了专业的技术视野。" },
+                { name: "胡钦赟", school: "苏州市立达中学校", file: "苏州市立达中学校  胡钦赟.png", praise: "调研极其深入！详细列举了苏州在新能产业布局、政策支持及企业案例，是一份高质量的产业分析报告。" },
+                { name: "邱紫涵", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 邱紫涵.jpg", praise: "抓住了“碳排放交易”这一关键概念，清晰梳理了能源转型背后的经济逻辑与现实困境。" },
+                { name: "张恒瑞", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 张恒瑞.png", praise: "对“碳中和”的理解非常通透，形象地解释了“排放=吸收”的平衡公式，逻辑思维能力很强。" }
+            ]
+        },
+14: {
+            title: "主题14 28岁赵心童问鼎的斯诺克世锦赛，怎么看？",
+            works: [
+                { name: "张涵", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 张涵.png", praise: "手绘的台球桌色彩鲜艳，非常吸睛！深刻剖析了选手从低谷到巅峰的心路历程，感悟真挚。" },
+                { name: "卞婉瑜", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 卞婉瑜.png", praise: "版面设计温馨精美，图文并茂地记录了夺冠的高光时刻，充满了对中国斯诺克新生代力量的自豪。" },
+                { name: "孙祎辰", school: "复旦大学附属闵行实验学校", file: "sunyichen7.png", praise: "内容详实专业！不仅科普了斯诺克规则，还深度分析了赵心童夺冠对中国斯诺克运动发展的推动作用。" },
+                { name: "王涵斐", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 王涵斐.png", praise: "抓住了“斯诺克=障碍”这一核心寓意，将球场规则与人生哲理完美结合，“永不言弃”的主题非常励志。" },
+                { name: "沈思齐", school: "上海市实验学校东校", file: "上海市实验学校东校 沈思齐3.png", praise: "创意满分！用一条波浪线清晰描绘了赵心童的“成长曲线”，将生活中的冷静与策略融入思考，非常有深度。" }
+            ]
+        },
+15: {
+            title: "主题15 博物馆日，让我们来说说博物馆这个行业",
+            works: [
+                { name: "金瑞琦", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 金瑞琦.png", praise: "思维非常商业化！清晰拆解了博物馆的上中下游产业链，对行业运作模式的理解超越了同龄人。" },
+                { name: "俞梓玥", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓玥.jpg", praise: "画风太可爱了！把严肃的文物变成了有趣的“显眼包”，这种独特的视角让历史瞬间鲜活了起来。" },
+                { name: "孙祎辰", school: "复旦大学附属闵行实验学校", file: "sunyichen8.png", praise: "一如既往的专业水准！用波浪线图表直观展示了博物馆从1.0到4.0的进化史，逻辑严密，版面整洁。" },
+                { name: "黄艺晨", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 黄艺晨.png", praise: "文笔优美，立意高远。从恐龙骨架看到了生命的壮阔与脆弱，将参观感悟升华到了人与自然的高度。" },
+                { name: "张语桐", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 张语桐.png", praise: "追根溯源，从“Muse”词源讲起，精准捕捉了博物馆4.0时代“科技+体验”的核心特征，视野开阔。" },
+                { name: "谭睿佳", school: "上海市闵行区马桥复旦万科实验中学", file: "上海市闵行区马桥复旦万科实验中学 谭睿佳.png", praise: "敏锐地抓住了行业痛点，深刻理解了博物馆从“以物为主”到“以人为本”的时代变革，总结到位。" },
+                { name: "俞梓涵", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓涵.jpg", praise: "路标设计极具巧思！三星堆青铜树和陶俑画得栩栩如生，用画笔记录了一场精彩的文化之旅。" }
+            ]
+        },
+16: {
+            title: "主题16 80年前的抗战精神，为什么伟大？",
+            works: [
+                { name: "王毅柔", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 王毅柔.jpg", praise: "海报设计色彩鲜明，将卡通人物与抗战元素完美融合，生动展现了“铭记历史，勿忘国耻”的爱国情怀。" },
+                { name: "宣昊辰", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校  宣昊辰.png", praise: "排版严谨大气，不仅梳理了抗战大事记，还列举了杨靖宇、赵一曼等英雄群像，史料详实，敬意满满。" },
+                { name: "王麒斐", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 王麒斐.png", praise: "设计感极强！复古风格的配色与“岁月流金”的主题相得益彰，深刻阐述了以史为鉴的重要性。" },
+                { name: "房暄", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 房暄.png", praise: "文笔细腻感人，将历史的沉痛与当下的和平进行对比，发出了“守护和平星光”的真挚呼唤。" },
+                { name: "胡宇凡", school: "上海市崇明区实验中学", file: "上海市崇明区实验中学 胡宇凡.jpg", praise: "画面冲击力强！鲜艳的红旗与金色的“80”字样交相辉映，吹响了新时代少年奋发图强的号角。" },
+                { name: "赵若嫣", school: "上海宝山区世外学校", file: "上海宝山区世外学校 赵若嫣.png", praise: "字迹工整有力，特别提到了“狼牙山五壮士”的英勇事迹，深刻理解了抗战精神中蕴含的牺牲与奉献。" },
+                { name: "宋辰忞", school: "上海市崇明中学附属东门中学", file: "上海市崇明中学附属东门中学 宋辰忞.png", praise: "立意深远，从“天下兴亡，匹夫有责”的高度剖析抗战精神，并将其与当代青年的责任担当紧密联系。" },
+                { name: "沈超", school: "上海浦东新区建平康梧中学", file: "上海浦东新区建平康梧中学 沈超.png", praise: "文章大气磅礴，逻辑严密。从历史的回响到新时代的传承，全面阐述了抗战精神在民族复兴中的核心价值。" },
+                { name: "叶浩伟", school: "上海市莘城学校", file: "上海市莘城学校 叶浩伟.png", praise: "聚焦四行仓库“八百壮士”的英勇故事，细节描写生动，字里行间流露出的民族自豪感令人动容。" },
+                { name: "叶辰昊", school: "苏州市立达中学校", file: "苏州市立达中学校 叶辰昊.png", praise: "展望2025年抗战胜利80周年，将历史沧桑与今日强盛进行对比，表达了“铭记历史，开创未来”的坚定信念。" },
+                { name: "秦云卿", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 秦云卿.png", praise: "以书信的形式跨越时空对话，语言质朴真挚，承诺传承“英雄超能力”，充满了少年的纯真与决心。" },
+                { name: "赵一凡", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 赵一凡.png", praise: "通过观看纪录片引发思考，深刻领悟了“读书是为了传承勇气与信念”，观点成熟，充满正能量。" }
+            ]
+        },
+17: {
+            title: "主题17 纪念反法西斯战争胜利 80 周年——长沙会战之三战三捷",
+            works: [
+                { name: "褚梓馨", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（中学部） 褚梓馨.png", praise: "图文并茂，和平鸽与敬礼少年的形象生动，深刻传达了铭记历史、珍爱和平的坚定信念。" },
+                { name: "黄诗妍", school: "上海市崇明中学附属东门中学", file: "上海市崇明中学附属东门中学 黄诗妍.png", praise: "创意极佳！用胶卷记录历史瞬间，时间轴清晰展示了抗战历程，复古画风非常有质感。" },
+                { name: "项羽菲", school: "华东师范大学附属东昌中学南校", file: "华东师范大学附属东昌中学南校 项羽菲.jpg", praise: "向日葵寓意着希望与光明，三个“必胜”的口号铿锵有力，传递了正能量满满的爱国情怀。" },
+                { name: "张歆悦", school: "上海市崇明中学附属东门中学", file: "上海市崇明中学附属东门中学 张歆悦.png", praise: "动漫画风生动可爱，人物敬礼姿态庄重，中英双语结合，展现了新时代少年的国际视野。" },
+                { name: "孙诗雨", school: "上海市崇明区实验中学", file: "上海市崇明区实验中学 孙诗雨.png", praise: "报纸排版独具匠心，“号外”设计代入感极强，书法字体苍劲有力，重现了胜利时的喜悦。" },
+                { name: "黄宬越", school: "上海市崇明区实验中学", file: "上海市崇明区实验中学 黄宬越.jpg", praise: "电脑绘图风格精美大气，三段式排版逻辑清晰，阅兵方阵画得威武雄壮，视觉冲击力强。" },
+                { name: "刘妍舒", school: "上海市蔡路中学", file: "上海市蔡路中学 刘妍舒.png", praise: "华表与长城象征着中华民族的脊梁，红绸带串联起历史与未来，构图宏大，立意高远。" },
+                { name: "陆旻川", school: "复旦大学附属闵行实验学校", file: "复旦大学附属闵行实验学校 陆旻川.jpg", praise: "色彩斑斓，两个小红军形象憨态可掬，爱心里的文字真挚感人，表达了做有用之人的决心。" },
+                { name: "张佑佳", school: "上海市浦东新区康桥小学", file: "上海市浦东新区康桥小学 张佑佳2.jpg", praise: "文章深刻回顾了《论持久战》的战略意义，字里行间流露出‘吃水不忘挖井人’的真挚情感。" },
+                { name: "任少泽", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 任少泽.jpg", praise: "时间轴清晰梳理了抗战关键节点，和平鸽与中英双语的设计体现了极佳的国际视野。" },
+                { name: "赵晟", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 赵晟.jpg", praise: "星形构图独具匠心，生动的卡通战士形象表达了对先烈用生命守护山河的崇高敬意。" },
+                { name: "范嘉尔", school: "上海市浦东新区锦绣小学", file: "上海市浦东新区锦绣小学 范嘉尔.jpg", praise: "色彩浓烈大气，红旗与天安门交相辉映，用艺术剪影生动诠释了‘铭记历史’的庄重主题。" },
+                { name: "李乔煜", school: "上海市浦东新区明珠小学A校区", file: "上海市浦东新区明珠小学A校区 李乔煜.jpg", praise: "军人与少先队员共同敬礼的画面温馨感人，象征着红色基因代代相传，充满了正能量。" },
+                { name: "陈祉瑄", school: "上海市浦东新区锦绣小学", file: "上海市浦东新区锦绣小学 陈祉瑄.png", praise: "创意性地采用了‘人民日报’版面，从缅怀先烈到少年自强，图文排版专业，逻辑严密。" },
+                { name: "刘启文", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校（中学部） 刘启文.png", praise: "艺术字标题气势磅礴，红绸带设计极具视觉冲击力，详细的历史梳理展现了深厚的家国情怀。" },
+                { name: "任左伊", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 任左伊.jpg", praise: "构图宏大，巍峨的长城、纪念碑与欢呼的战士共同构筑了一幅胜利画卷，画风热血。" },
+                { name: "胡宸轲", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 胡宸轲.jpg", praise: "红色主调热血沸腾，醒目的“9.3”与党徽交相辉映，深刻表达了传承红色基因、争做时代新人的决心。" },
+                { name: "张俊铭", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 张俊铭.jpg", praise: "版面设计专业大气，从“世界和平建设者”的国际视角切入，图文并茂地展现了中国军队的威武与文明。" },
+                { name: "瞿洪雅", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 瞿洪雅.jpg", praise: "“钢铁长城”的立意非常棒！不仅回顾了屈辱历史，更列举了航母、歼-20等大国重器，古今对比感极强。" },
+                { name: "李沐泽", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 李沐泽.png", praise: "手绘笔触苍劲有力，巧妙结合了革命行军路线图与战斗群像，生动勾勒出从抗战烽火到和平鸽飞翔的辉煌历程。" },
+                { name: "程然", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 程然.jpg", praise: "构图简洁且意境深远，军帽与冲锋号的特写充满象征意义，“山河无恙，吾辈自强”的誓言令人动容。" },
+                { name: "俞梓玥", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓玥2.jpg", praise: "色彩冷暖对比极具张力，上方战火硝烟与下方现代国防形成强烈呼应，完美诠释了“从胜利走向胜利”。" },
+                { name: "陆智萱", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 陆智萱.jpg", praise: "画面清新温暖，巍峨长城与朝气蓬勃的少年相得益彰，细腻的文字抒发了珍视和平、报效祖国的真挚情感。" },
+                { name: "丁梓灵", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 丁梓灵.jpg", praise: "报刊风格排版严谨，清晰梳理了抗战胜利的关键历史节点，冲锋号角的插画极具感染力，科普性与艺术性兼备。" },
+               { name: "邓文杰", school: "上海市亭新中学", file: "上海市亭新中学 邓文杰.jpg", praise: "构图宏大，行军路线图与战士呐喊的形象相得益彰，深情回顾了那段峥嵘岁月，气势非凡！" },
+               { name: "董玥辰", school: "上海市莘城学校", file: "上海市莘城学校 董玥辰.png", praise: "立体字的标题设计独具匠心，极具质感！文字真挚感人，通过和平鸽传递了对未来的美好祈愿。" },
+               { name: "林思诚", school: "上海市莘城学校", file: "上海市莘城学校 林思诚.jpg", praise: "色彩鲜艳明快，向日葵映衬着飘扬的红旗，对抗战历史的梳理清晰准确，充满了少年的正能量。" }
+            ]
+        },
+18: {
+            title: "主题18 人形机器人运动会，是在哗众取宠吗？",
+            works: [
+                { name: "秦陈洁", school: "上海市嘉定区新城实验中学", file: "上海市嘉定区新城实验中学 秦陈洁.jpg", praise: "色彩明快，生动描绘了AI在教育、生活中的多重应用，展现了人机共存的美好画卷。" },
+                { name: "李沐泽", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 李沐泽2.png", praise: "画面充满童趣，机器人化身家务小能手，生动展现了科技为家庭生活带来的温馨与便利。" },
+                { name: "宋梓萌", school: "上海市临港实验中学", file: "上海市临港实验中学 宋梓萌.png", praise: "聚焦球形机器人，图文结合分析了其技术优势与应用场景，展现了极强的工程思维与逻辑。" },
+                { name: "王紫薇", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 王紫薇.png", praise: "图文排版像一份精美的新闻报纸，详细介绍了机器人运动会的盛况，资讯整理能力很强。" },
+                { name: "王彧菀", school: "闵行区七宝镇明强小学", file: "闵行区七宝镇明强小学 王彧菀.png", praise: "画风唯美科幻，月球背景下的人机握手极具象征意义，传达了跨越物种的信任与连接。" },
+                { name: "郝江瑜", school: "华东师范大学第二附属中学前滩学校", file: "华东师范大学第二附属中学前滩学校 郝江瑜.png", praise: "以‘稚晖君’为榜样，人机献花的画面温馨感人，畅想了机器人作为‘好朋友’的温暖未来。" },
+                { name: "翟梓萌", school: "闵行区七宝镇明强小学", file: "闵行区七宝镇明强小学 翟梓萌.png", praise: "构图宏大绚丽，将太空探索、生态家园与机器人技术完美融合，想象力天马行空！" },
+                { name: "李文溪", school: "苏州市立达中学校", file: "苏州市立达中学校 李文溪.png", praise: "书写工整，辩证思考了人工智能对就业的双重影响，展现了中学生冷静理性的社会观察。" },
+                { name: "刘泽洋", school: "上海市金鼎学校", file: "上海市金鼎学校 刘泽洋.png", praise: "文章立意深刻，从运动会延伸到对人类独特价值的思考，指出情感与创造力才是我们的核心竞争力。" }
+            ]
+        },
+19: {
+            title: "主题19 九三阅兵，我们可以读出什么？",
+            works: [
+                { name: "寿欣怡", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学  寿欣怡.png", praise: "版面设计大气，不仅摘录了振奋人心的金句，更深刻表达了“铭记历史，吾辈自强”的坚定信念。" },
+                { name: "邢皓云", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 邢皓云.jpg", praise: "画风豪迈，引用诗句“为什么我的眼里常含泪水”道出了对这片土地深沉的爱，情感真挚动人。" },
+                { name: "陈语萱", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 陈语萱.jpg", praise: "采用问答形式科普阅兵知识，逻辑清晰，字里行间流露出对祖国“钢铁长城”的无限自豪。" },
+                { name: "马艺菲", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 马艺菲.png", praise: "制作精良的电子小报，视野宏大，从历史联想到科技飞跃，展现了新时代青年的责任与担当。" },
+                { name: "梁煜晖", school: "上海市嘉定区练川实验学校", file: "上海市嘉定区练川实验学校 梁煜晖.png", praise: "色彩斑斓，用气球与和平鸽装点阅兵蓝天，画面充满童真与希望，美好寓意跃然纸上。" },
+                { name: "许馨尹", school: "华东师范大学附属东昌中学南校", file: "华东师范大学附属东昌中学南校 许馨尹.jpg", praise: "海报设计极具专业感，剪影运用巧妙，条理清晰地分析了阅兵方队的构成，视觉冲击力强。" },
+                { name: "许雯", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 许雯.jpg", praise: "“硬核”军事迷！精准绘制了歼-20和99A主战坦克，对装备性能的分析透彻专业，令人佩服。" },
+                { name: "林屿澄", school: "上海市浦东新区三林实验小学", file: "上海市浦东新区三林实验小学 林屿澄.png", praise: "视角独到，从宏大的阅兵式回归身边的国防教育，通过邻居老兵的故事，让爱国情怀落地生根。" },
+                { name: "蔡毓翎", school: "上海市莘城学校", file: "上海市莘城学校 蔡毓翎2.jpg", praise: "画风清新，军号嘹亮，荷花与和平鸽的组合寓意深刻，象征着在和平年代不忘历史回响。" },
+                { name: "李梓涵", school: "上海市莘城学校", file: "上海市莘城学校 李梓涵.jpg", praise: "图文并茂，详细梳理了从“九一八”到胜利的历史节点，牡丹花的点缀让画面既庄重又典雅。" },
+                { name: "梁泽凯", school: "上海市莘城学校", file: "上海市莘城学校 梁泽凯.png", praise: "剪贴与手绘结合，形式新颖，少先队员向历史敬礼的画面，生动传达了红色基因的代代相传。" },
+                { name: "陶雅欣", school: "上海市亭新中学", file: "上海市亭新中学 陶雅欣.png", praise: "构思独特，在展现中国力量的同时描绘了世界地标，表达了中国与世界共筑和平的美好愿景。" },
+                { name: "吴佳殷", school: "上海市莘城学校", file: "上海市莘城学校 吴佳殷.jpg", praise: "色彩热烈，冲锋号角的特写极具感染力，金色的数字“80”在红旗映衬下熠熠生辉。" },
+                { name: "盛鹤雅", school: "上海市莘城学校", file: "上海市莘城学校 盛鹤雅.jpg", praise: "构图简洁有力，战机拉出的彩烟如彩虹般绚丽，用明快的色彩庆祝这一伟大的胜利时刻。" },
+                { name: "余玉涵", school: "上海市普陀区教育学院附属中学", file: "上海市普陀区教育学院附属中学 余玉涵.jpg", praise: "信息量巨大！密密麻麻的笔记记录了阅兵的每一个感人细节，是对“威武之师”最好的致敬。" }
+            ]
+        },
+20: {
+            title: "主题20 高温预警频发的暑假，地球迎来高温时代",
+            works: [
+                { name: "陈予馨", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 陈予馨.png", praise: "画风清新可爱，‘打开窗户’的小贴士非常实用，传递了自然通风的低碳智慧。" },
+                { name: "李沐泽", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 李沐泽3.png", praise: "色彩明亮，将垃圾分类知识融入画面，‘绿色行动’树的设计极具巧思！" },
+                { name: "黄俊杰", school: "上海市金鼎学校", file: "上海市金鼎学校 黄俊杰.png", praise: "从身边的酷热切入思考，提出了‘借助校园活动’推广低碳的建议，非常有行动力。" },
+                { name: "毛炜彤", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 毛炜彤2.png", praise: "强烈的色彩对比直观展示了污染与环保的两种未来，警示我们要做出正确的选择。" },
+                { name: "王艺璇", school: "山西省平遥中学", file: "山西省平遥中学 王艺璇2.png", praise: "逻辑严密，从个人、政府到国际社会三个层面剖析问题，展现了宏大的全球视野。" },
+                { name: "李沛远", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 李沛远.png", praise: "四格漫画形式生动有趣，把‘环保小公约’描绘得具体可行，朗朗上口。" },
+                { name: "张宸", school: "上海宝山区世外学校", file: "上海宝山区世外学校 张宸.png", praise: "分析透彻，探讨了国际组织与政府的责任边界，体现了极高的社会责任感与思辨力。" }
+            ]
+        },
+21: {
+            title: "主题21 小红书、微博、快手被罚，社交媒体对青少年来说意味着什么？",
+            works: [
+                { name: "许悦冉", school: "上海市西林中学", file: "上海市西林中学 许悦冉.png", praise: "图文并茂，生动描绘了网络成瘾的‘众生相’，对‘多巴胺绑架’的分析直击痛点，画风犀利。" },
+                { name: "李沐泽", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 李沐泽4.png", praise: "色彩明快，充满了正能量，‘拒绝不良信息’的标识醒目，倡导了文明上网、绿色上网的新风尚。" },
+                { name: "梁校瑜", school: "山西省平遥中学", file: "山西省平遥中学 梁校瑜2.png", praise: "引经据典，从‘功能性过剩’的社会学视角剖析问题，列举多国法规，视野开阔，见解独到。" },
+                { name: "叶芷涵", school: "上海市金鼎学校", file: "上海市金鼎学校 叶芷涵.png", praise: "剖析了‘滤镜’下的容貌焦虑与‘准社交关系’，真诚地反思了虚拟与现实的边界，思想深刻。" },
+                { name: "路珠", school: "上海市西林中学", file: "上海市西林中学 路珠.png", praise: "笔记条理清晰，从大脑发育和心理需求层面分析危害，逻辑严密，对‘清朗行动’的理解很透彻。" },
+                { name: "叶羽轩", school: "上海市西林中学", file: "上海市西林中学 叶羽轩.png", praise: "辩证看待社交媒体的‘利与弊’，通过手绘智能设备图标，提出了‘合理使用’的科学倡议。" }
+            ]
+        },
+22: {
+            title: "主题22 中国青少年的肌肉力量为什么持续衰退？",
+            works: [
+                { name: "黄奕森", school: "上海市浦东新区锦绣小学", file: "上海市浦东新区锦绣小学 黄奕森.jpg", praise: "用足球串联起荣耀与拼搏，思维导图形式新颖，诠释了‘无兄弟，不足球’的团队精神。" },
+                { name: "刘依倩", school: "上海宝山区世外学校", file: "上海宝山区世外学校 刘依倩.jpg", praise: "图文结合的拼贴画极具生活气息，从大脑发育到情绪改善，全方位展示了运动是成长的最佳‘营养剂’。" },
+                { name: "欧嘉阳", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 欧嘉阳.png", praise: "电子小报制作精良，对‘校内校外两个小时’政策解读到位，运动安全小贴士非常贴心。" },
+                { name: "胡宇凡", school: "上海市崇明区实验中学", file: "上海市崇明区实验中学 胡宇凡2.jpg", praise: "操场上的奔跑身姿极具动感，色彩对比鲜明，生动记录了挥洒汗水、磨练耐力的热血时刻。" },
+                { name: "曹煦玥", school: "上海市浦东新区锦绣小学", file: "上海市浦东新区锦绣小学 曹煦玥.jpg", praise: "四格漫画童趣盎然，踢毽子、跳房子……生动描绘了丰富多彩的课间活动，充满了快乐的童年回忆。" },
+                { name: "尤嘉芸", school: "上海市浦东新区清源小学", file: "上海市浦东新区清源小学 尤嘉芸.jpg", praise: "‘生命在于运动’的主题突出，冲过终点线的画面极具张力，传递了积极向上的体育精神。" },
+                { name: "施静姝", school: "上海市浦东新区明珠小学B校区", file: "上海市浦东新区明珠小学B校区 施静姝.jpg", praise: "时间表规划得井井有条，将运动的快乐、团结与挑战分析得头头是道，不仅是锻炼，更是成长。" },
+                { name: "徐艺桐", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 徐艺桐.jpg", praise: "画风色彩明快，‘吃饭香、上课精神棒’的标语朴实真挚，道出了运动带给生活的积极变化。" },
+                { name: "许诚谦", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 许诚谦.png", praise: "跳绳的小伙伴憨态可掬，彩虹背景充满希望，强调了运动对保护视力和磨练意志的双重作用。" },
+                { name: "李嘉莹", school: "上海市浦东新区清源小学", file: "上海市浦东新区清源小学 李嘉莹.jpg", praise: "敏锐地指出了运动对抗‘小眼镜’‘小胖墩’的现实意义，羽毛球对决的场面充满了活力与快乐。" },
+                { name: "王雨晴", school: "上海市亭新中学", file: "上海市亭新中学 王雨晴.png", praise: "画风二次元感十足，将动漫角色与体育精神结合，‘生命不息，运动不止’的文案充满热血与激情。" },
+                { name: "俞梓涵", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学  俞梓涵2.jpg", praise: "色彩鲜艳，构图饱满，生动描绘了乒乓、篮球、足球的热闹场景，展现了‘运动健康快乐’的校园风采。" },
+                { name: "汤乐馨", school: "上海市致远中学", file: "上海市致远中学 汤乐馨2.jpg", praise: "排版如杂志般精美，不仅科普了运动会起源，还列出了详尽的运动注意事项，兼具美感与实用性。" },
+                { name: "张尔祺", school: "上海市莘城学校", file: "上海市莘城学校 张尔祺.jpg", praise: "文字真挚朴实，生动记录了从‘只能小声聊天’到‘活力魔法’操场的转变，读来让人感受到运动带来的纯粹快乐。" },
+                { name: "俞梓玥", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓玥3.jpg", praise: "插画风格清新，捕捉了晨练瑜伽和傍晚球赛的美好瞬间，细腻地传达了运动对身心的滋养。" },
+                { name: "戚博源", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 戚博源.png", praise: "计划表制定得科学严谨，可爱的手绘图标让枯燥的训练项目变得生动有趣，自律的小达人！" },
+                { name: "杨宸绯", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 杨宸绯.png", praise: "以绿色为主调，条理清晰地列举了运动的十大好处，图文并茂地倡导了健康生活理念。" },
+                { name: "沈诗悦", school: "上海市莘城学校", file: "上海市莘城学校 沈诗悦.jpg", praise: "结合个人照片的电子报设计感强，记录了兵乓、羽毛球和游泳的运动时光，展现了多才多艺的运动少女形象。" },
+                { name: "杨馨乐", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 杨馨乐3.png", praise: "模拟手机界面的设计极具创意，‘告别午后犯困’的感悟真实接地气，发出了‘成长比分数更珍贵’的有力呼喊。" },
+                { name: "秦鑫琦", school: "上海市亭新中学", file: "上海市亭新中学 秦鑫琦.png", praise: "彩虹与跑道交织，画面充满动感，深刻感悟了跑步作为‘探索自我极限旅程’的意义，正能量满满。" }
+            ]
+        },
+23: {
+            title: "主题23 大国工程——世界第一高桥花江峡谷大桥",
+            works: [
+                { name: "骆懿唯", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 骆懿唯.png", praise: "图文并茂地介绍了‘天下第一桥’赵州桥，数据详实，画工精致，展现了对中国古代桥梁智慧的深深敬意。" },
+                { name: "熊梓佑", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 熊梓佑.png", praise: "笔触细腻，生动还原了南浦大桥的雄伟身姿，云朵的点缀让画面充满了生气，展现了上海地标的魅力。" },
+                { name: "李诗琪", school: "上海市高东镇中心小学", file: "上海市高东镇中心小学 李诗琪.jpeg", praise: "是一份极佳的‘桥梁科普小报’！不仅详细介绍了赵州桥，还梳理了桥梁种类与文化，知识含量极高。" },
+                { name: "王舒妍", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 王舒妍.png", praise: "构思巧妙，将卢浦大桥与南浦大桥‘双桥’同框，线条流畅，生动展现了上海跨江大桥的独特螺旋设计。" },
+                { name: "郑圣皓", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 郑圣皓.png", praise: "视角非常独特！聚焦于大桥的建设与维护场景，工程车的细节刻画到位，向默默奉献的城市建设者致敬。" },
+                { name: "赵恩彤", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 赵恩彤.png", praise: "素描风格严谨，精准描绘了苏通大桥的斜拉结构，文字介绍深刻理解了工程设计的巧思与价值。" },
+                { name: "张博文", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 张博文.png", praise: "色彩明亮绚丽，在光影交错中描绘了跨江大桥的壮丽景色，画面极具艺术感染力与现代感。" },
+                { name: "陈一扬", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 陈一扬.png", praise: "充满童趣的想象力！彩虹色的桥梁连接着大海与蓝天，繁忙的交通景象描绘了未来生活的美好蓝图。" }
+            ]
+        },
+24: {
+            title: "主题24 课本上的传奇珍·古道尔",
+            works: [
+                { name: "高尔嘉", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 高尔嘉.png", praise: "笔记详尽地梳理了珍·古道尔的生平，关于“耐心与观察”的思考非常深刻，是一位用心的小小记录者。" },
+                { name: "陆欣桐", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 陆欣桐.png", praise: "重点清晰，捕捉到了“好奇心”与“坚持”之间的必然联系，页面装饰精美，学习态度非常端正。" },
+                { name: "吕双", school: "上海市金鼎学校", file: "上海市金鼎学校 吕双.png", praise: "将珍·古道尔的故事与校园观鸟活动结合，感悟出“有趣的发现藏在枯燥的重复里”，这份洞察力令人惊叹！" },
+                { name: "李品翰", school: "华东师范大学附属东昌中学南校", file: "华东师范大学附属东昌中学南校 李品翰.png", praise: "视角独特，关注到她作为女性冲破偏见、淡泊名利的高贵品质，对人物精神的解读具有超越年龄的成熟度。" },
+                { name: "曹晟轩", school: "上海宝山区世外学校", file: "上海宝山区世外学校 曹晟轩.png", praise: "从全球气候治理的高度思考环保责任，呼吁从个人小事做起响应保护行动，这份大局观与行动力正是榜样精神的最好传承。" }
+            ]
+        },
+25: {
+            title: "主题25 人工智能报告出炉，AI发展到什么地步了？",
+            works: [
+                { name: "丁梓钊", school: "复旦大学附属闵行实验学校", file: "复旦大学附属闵行实验学校 丁梓钊.png", praise: "将AI‘小灵’比作智慧精灵，强调了‘AI是助手而非替代思考’的观点，非常理性且深刻。" },
+                { name: "孙怡嘉", school: "上海市崇明区长明中学", file: "上海市崇明区长明中学 孙怡嘉.png", praise: "图文结合，清晰定义了人工智能的概念，机器人形象绘制得科技感十足！" },
+                { name: "李子俊", school: "上海市崇明区长明中学", file: "上海市崇明区长明中学 李子俊.png", praise: "线条繁复精细，赛博朋克风格的画面极具视觉冲击力，展现了对未来科技世界的无限遐想。" },
+                { name: "高天宇", school: "上海市崇明中学附属东门中学", file: "上海市崇明中学附属东门中学 高天宇.png", praise: "把AI比作‘校园搭子’，用‘奶茶甜度’解数学题的例子生动有趣，写出了科技的温度。" },
+                { name: "杨瑀熙", school: "上海市金鼎学校", file: "上海市金鼎学校 杨瑀熙.png", praise: "不仅用AI解决了保温杯制作难题，还学到了热传递知识，真是学以致用的好榜样！" },
+                { name: "刘百合", school: "上海市金鼎学校", file: "上海市金鼎学校 刘百合.png", praise: "记录了与AI攻克‘鸡兔同笼’难题的过程，AI的耐心讲解让你感受到了像朋友一样的温暖。" },
+                { name: "王源", school: "上海市崇明区长明中学", file: "上海市崇明区长明中学 王源.png", praise: "画面温馨，色彩柔和，生动描绘了AI作为‘万能小老师’陪伴学习的美好场景。" },
+                { name: "于思琪", school: "上海市崇明区长明中学", file: "上海市崇明区长明中学 于思琪.png", praise: "版面设计活泼，紧跟时事列举了Kimi和DeepSeek等国产AI，展现了极佳的信息捕捉能力。" },
+                { name: "王佳宸", school: "上海市浦东新区林苑小学", file: "上海市浦东新区林苑小学 王佳宸.jpeg", praise: "画面色彩斑斓，充满奇幻色彩！生动展示了AI作为‘魔法钥匙’开启了个性化学习与无限创造的新世界。" },
+                { name: "凌思慎", school: "上海市浦东新区明珠森兰小学", file: "上海市浦东新区明珠森兰小学 凌思慎.jpg", praise: "观察力敏锐，从儿童手表到送餐机器人，记录了身边真实的科技细节，感叹了AI带给生活的便利与惊喜。" },
+                { name: "王梓萌", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校 王梓萌.png", praise: "电子海报设计感极强！条理清晰地列举了AI在医疗、农业、金融等多领域的应用，展现了广阔的科技视野。" },
+                { name: "严梓玥", school: "上海市浦东新区建平临港小学", file: "上海市浦东新区建平临港小学 严梓玥.png", praise: "画风软萌可爱，把AI描绘成陪读、陪画的好伙伴，充满了童真，展现了人机和谐共处的温馨画面。" },
+                { name: "程梓奚", school: "上海市浦东新区建平临港小学", file: "上海市浦东新区建平临港小学 程梓奚.jpg", praise: "色彩鲜亮，生动描绘了与机器狗、无人机和机器人做朋友的美好场景，充满了对未来科技生活的向往。" },
+                { name: "孙思绮", school: "上海市浦东新区进才实验小学", file: "上海市浦东新区进才实验小学 孙思绮.jpeg", praise: "版面设计工整美观，逻辑清晰地提出了‘自我管理’与‘文明社交’的建议，是数字时代青少年理性使用科技的优秀指南。" },
+                { name: "张俊皓", school: "上海市浦东新区建平临港小学", file: "上海市浦东新区建平临港小学 张俊皓.jpg", praise: "将AI定义为‘创意合伙人’，通过写生日贺卡、接龙故事等具体案例，生动展示了科技如何激发灵感。" },
+                { name: "郝韵齐", school: "上海市浦东新区林苑小学", file: "上海市浦东新区林苑小学 郝韵齐.png", praise: "观点非常成熟！提出了‘先思考后询问’的原则，强调了人类的主导权，‘海图由我绘，航向由你定’金句频出。" },
+                { name: "刘芫臣", school: "上海市浦东新区明珠小学C校区", file: "上海市浦东新区明珠小学C校区 刘芫臣.jpg", praise: "作品极具未来感，用AI生成的画面展示了飞行巴士与云端家园，完美诠释了‘科技让想象落地’的主题。" },
+                { name: "俞梓涵", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓涵3.jpg", praise: "构图丰富，从足球场到家务活，全方位展示了AI机器人作为‘全能帮手’融入生活的有趣场景。" },
+                { name: "施徐宸", school: "上海市实验学校东校", file: "上海市实验学校东校  施徐宸.png", praise: "不仅是一幅画，更像是一个未来的城市规划蓝图！对‘AI智筑城’的构想宏大且逻辑严密，极具专业范儿。" },
+                { name: "杨馨乐", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 杨馨乐4.png", praise: "像素风设计让人眼前一亮！精准捕捉了AI在纠正发音、识别植物等学习场景中的实用功能，既复古又摩登。" },
+                { name: "陶雅欣", school: "上海市亭新中学", file: "上海市亭新中学 陶雅欣.jpg", praise: "版面设计极具艺术感，不仅介绍了AI工具，更深入探讨了人机关系，‘何以为人’的哲学思考令人深思。" },
+                { name: "俞梓玥", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓玥4.jpg", praise: "画笔细腻，生动描绘了机器人做饭、打扫的温馨日常，让我们对未来‘解放双手’的智能生活充满了期待。" }
+            ]
+        },
+26: {
+            title: "主题26 “台湾光复纪念日”设立，究竟意义何在",
+            works: [
+                { name: "李炜皓", school: "上海市市光学校", file: "上海市市光学校 李炜皓.png", praise: "深刻阐述了立法设立纪念日的‘核心意义’，从国家主权高度分析了其严肃性与权威性，观点非常成熟。" },
+                { name: "严懿珺", school: "上海市市光学校", file: "上海市市光学校 严懿珺.png", praise: "形象地将立法比作‘国家认证章’，强调了两岸同胞的血脉相连，对历史与未来的思考充满了家国情怀。" },
+                { name: "何嘉猷", school: "上海市市光学校", file: "上海市市光学校 何嘉猷.png", praise: "逻辑清晰，将‘台湾光复’与‘抗战胜利’及‘国家公祭’进行横向对比，深刻理解了历史记忆对民族精神的构建作用。" }
+            ]
+        },
+27: {
+            title: "主题27 郑智化风波之多维度思考",
+            works: [
+                { name: "周驭晴", school: "上海市浦东新区锦绣小学", file: "上海市浦东新区锦绣小学 周驭晴.png", praise: "调研深入，通过‘调查’与‘改进’的对比，直观展示了无障碍设施的重要性，建议非常切中时弊。" },
+                { name: "王博宁", school: "上海市嘉定区练川实验学校", file: "上海市嘉定区练川实验学校 王博宁.png", praise: "色彩温暖，文字充满了人文关怀，真挚地呼吁大家从身边小事做起，‘为爱前行’。" },
+                { name: "陈星羽", school: "苏州市立达中学校", file: "苏州市立达中学校  陈星羽.png", praise: "科技感十足！提出了‘彩虹坡道’和‘AR盲道导航’的创意方案，用智慧点亮了无障碍生活。" },
+                { name: "俞梓涵", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓涵.png", praise: "画面温馨，关注到了导盲犬、无障碍车位等细节，生动传递了‘与爱同行’的社会责任感。" },
+                { name: "赖宇杰", school: "上海市嘉定区练川实验学校", file: "上海市嘉定区练川实验学校 赖宇杰.png", praise: "图文并茂，科普了国际残疾人日，用爱心和援手构建了互助互爱的温暖画面。" },
+                { name: "俞梓玥", school: "上海市浦东新区尚博实验小学", file: "上海市浦东新区尚博实验小学 俞梓玥.png", praise: "构图工整，细致描绘了轮椅升降台、地铁优先座等设施，展现了城市建设中‘有爱’的一面。" },
+                { name: "孙怡嘉", school: "上海市崇明区长明中学", file: "上海市崇明区长明中学  孙怡嘉.png", praise: "以上海地标为背景，醒目的无障碍标识象征着这座国际大都市的包容与文明，立意很高。" },
+                { name: "潘若", school: "苏州市立达中学校", file: "苏州市立达中学校  潘若.png", praise: "思维缜密，针对盲道占用、公交站台等痛点提出了切实可行的改进方案，极具社会治理的眼光。" },
+                { name: "杨宸绯", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 杨宸绯2.png", praise: "画风唯美，聚焦地铁‘渡板’这一暖心细节，生动诠释了‘有爱无碍’的城市温度。" }
+            ]
+        },
+28: {
+            title: "主题28 从进博会，看中国的高水平对外开放战略",
+            works: [
+                { name: "范骏逸", school: "苏州市立达中学校", file: "苏州市立达中学校 范骏逸.png", praise: "视角独特，从免签旅游、中欧班列等生活细节入手，生动阐述了‘开放战略’如何渗透进我们的衣食住行。" },
+                { name: "祁泽霆", school: "苏州市立达中学校", file: "苏州市立达中学校 祁泽霆.png", praise: "以苏州为例，从昆曲出海到外企扎根，描绘了一幅古韵与现代交融的开放画卷，观察非常细致。" },
+                { name: "凌昕妤", school: "上海市市光学校", file: "上海市市光学校 凌昕妤.png", praise: "结合校园‘一带一路’文化周的亲身经历，感悟到了文化共鸣的力量，让宏大主题变得具体可感。" },
+                { name: "陈歆悦", school: "上海市市光学校", file: "上海市市光学校 陈歆悦.png", praise: "关注到了‘文化消费常态化’与‘地方产业国际化’的双向互动，对云南咖啡、义乌小商品的分析很有见地。" }
+            ]
+        },
+29: {
+            title: "主题29 2025年，新闻大盘点（上）",
+            works: [
+                { name: "黄贤君", school: "上海师范大学附属金山前京中学", file: "上海师范大学附属金山前京中学 黄贤君.jpg", praise: "聚焦AI在电话录音、图像识别等具体场景的应用，排版科技感十足，对技术细节的捕捉非常敏锐。" },
+                { name: "侯佳轩", school: "山西省平遥中学", file: "山西省平遥中学 侯佳轩.jpg", praise: "像一份专业的行业分析报告！从伦理、就业、社会适应等宏观维度深度剖析AI，视野宏大，逻辑严密。" },
+                { name: "秦诗涵", school: "上海市蔡路中学", file: "上海市蔡路中学 秦诗涵.jpeg", praise: "提出了‘做AI时代的智慧骑手’这一精彩观点，将技术与哲学思考结合，强调了人类的主体性，思想深刻。" },
+                { name: "杨开泰", school: "上海世外教育附属虹口区欧阳学校", file: "上海世外教育附属虹口区欧阳学校 杨开泰.png", praise: "梳理了从图灵测试到神经网络的历史脉络，知识点密集，图文并茂地展示了AI的前世今生。" },
+                { name: "潘怡冉", school: "上海世外教育附属虹口区欧阳学校", file: "上海世外教育附属虹口区欧阳学校 潘怡冉.png", praise: "画面色彩绚丽，将东方明珠与未来飞船同框，赛博朋克风的少女形象极具张力，想象力爆棚。" },
+                { name: "李言者", school: "交大附中附属嘉定德富中学", file: "交大附中附属嘉定德富中学 李言者.jpg", praise: "设计感极强，像一张成熟的科技海报。清晰归纳了AI作为‘全能家教’和‘贴心管家’的角色，总结精准。" },
+                { name: "杨雨泽", school: "上海师范大学附属金山前京中学", file: "上海师范大学附属金山前京中学 杨雨泽.jpeg", praise: "列举了ChatGPT、文心一言等具体工具，对AI创作过程的记录真实生动，展现了积极探索的学习态度。" },
+                { name: "吴霈泽", school: "闵行区七宝镇明强小学", file: "闵行区七宝镇明强小学 吴霈泽.jpg", praise: "鲜艳的黄色背景充满活力，机械臂与VR眼镜的描绘细节丰富，生动展示了对未来智能生活的无限憧憬。" },
+                { name: "张傲佳", school: "上海市工程技术管理学校", file: "上海市工程技术管理学校  张傲佳.jpg", praise: "画风唯美，将少女侧影与未来城市完美融合，对‘AI共筑数字未来’的倡议充满了青年一代的担当与憧憬。" },
+                { name: "黄嘉昕", school: "上海市崇明区大公中学", file: "上海市崇明区大公中学 黄嘉昕.jpg", praise: "色彩统一的赛博朋克风格非常吸睛！紧跟时事提到了DeepSeek，对‘技术向善’的思考展现了科技伦理的高度。" },
+                { name: "娄而语", school: "上海市第八中学", file: "上海市第八中学 娄而语.jpg", praise: "用SWOT分析法拆解AI利弊，逻辑严密，版面设计专业大气，展现了极高的理性思维与学术素养。" },
+                { name: "沈鑫雪", school: "上海市工程技术管理学校", file: "上海市工程技术管理学校 沈鑫雪.jpg", praise: "可爱的机器人形象亲和力十足，清晰阐述了AI作为‘催化剂’的双面影响，观点辩证，条理分明。" },
+                { name: "秦芷宁", school: "上海市崇明区大公中学", file: "上海市崇明区大公中学 秦芷宁.jpg", praise: "用画笔描绘了人脑与芯片的对话，色彩丰富，深刻探讨了在算法洪流中保持人类独特感知力的重要性。" },
+                { name: "刘俊杰", school: "上海市工程技术管理学校", file: "上海市工程技术管理学校 刘俊杰.jpg", praise: "聚焦低空经济与新能源汽车，对行业应用的分析精准专业，展现了扎实的工程技术视野与职业素养。" },
+                { name: "陈子航", school: "上海市川沙中学", file: "上海市川沙中学 陈子航.png", praise: "实测了DeepSeek和豆包，提出了‘批判性思维’与‘内驱力’是未来核心竞争力，见解独到，发人深省。" },
+                { name: "陈佳怡", school: "上海市崇明区大公中学", file: "上海市崇明区大公中学 陈佳怡.jpg", praise: "画作极具艺术张力，机械手与人形的触碰充满隐喻，文字优美，道出了‘科技是智慧与温度延伸’的真谛。" },
+                { name: "陈可心", school: "上海市敬业中学", file: "上海市敬业中学 陈可心.jpeg", praise: "画面唯美梦幻，文字充满了诗意与哲理，将人与AI的关系比作‘共生之舞’，展现了极高的文学修养与审美。" },
+                { name: "吴欣悦", school: "上海市嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 吴欣悦.jpg", praise: "构图清晰，拼图元素寓意深刻，强调了青年一代在推动AI与人文融合中的责任，观点积极向上。" },
+                { name: "张婷婷", school: "上海市嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 张婷婷.png", praise: "赛博朋克画风酷炫，紧跟时事分析了DeepSeek，对‘守护人类红线’的思考展现了成熟的伦理观。" },
+                { name: "施一菲", school: "上海市工程技术管理学校", file: "上海市工程技术管理学校 施一菲.jpg", praise: "手绘线条流畅，半人半机械的构图极具科幻感，生动诠释了AI作为‘外脑’助力成长的核心理念。" },
+                { name: "朱婧柔", school: "上海市嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 朱婧柔.jpg", praise: "霓虹风格的标题非常吸睛，列举了DeepSeek等常用工具，辩证分析了机遇与挑战，逻辑非常清晰。" },
+                { name: "陆天米", school: "上海市嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 陆天米.png", praise: "这不仅仅是一份小报，更像是一篇深度论文！对AI本质、局限及人机关系的剖析极具思想深度，令人叹服。" },
+                { name: "许锦程", school: "上海市嘉定区中光高级中学", file: "上海市嘉定区中光高级中学 许锦程.jpeg", praise: "漫画风格独树一帜，借‘深蓝’之口探讨了AI绘画的版权与原创价值，视角犀利，充满了批判性思维。" },
+                { name: "何宇阳", school: "上海市华泾小学", file: "上海市华泾小学 何宇阳.png", praise: "色彩斑斓，充满了童趣与想象力！把AI比作插上想象翅膀的神奇画笔，展现了小学生对科技的纯真向往。" },
+                { name: "马毓阳", school: "上海市敬业中学", file: "上海市敬业中学 马毓阳.png", praise: "故障艺术风格独特，大胆指出了AI作画的缺陷，强调了人类精神坐标的不可替代性，非常酷！" },
+                { name: "黎楚妍", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校 黎楚妍.jpeg", praise: "动漫人物绘制精美，提出了用AI‘复活’课本古人进行对话的创意，是极佳的学习新思路。" },
+                { name: "吴嘉怡", school: "上海市闵行区君莲学校", file: "上海市闵行区君莲学校 吴嘉怡.jpg", praise: "色彩丰富，从食堂到教室全方位畅想了AI应用，描绘了一幅充满科技便利的未来校园生活图景。" },
+                { name: "王欣宸", school: "上海市民办尚德实验学校", file: "上海市民办尚德实验学校 王欣宸.jpeg", praise: "太空主题背景宏大，分享了AI生成个性化试卷的实际体验，学习方法非常接地气且高效。" },
+                { name: "冉浚彤", school: "上海市闵行区莘松中学", file: "上海市闵行区莘松中学 冉浚彤.jpeg", praise: "排版清爽，逻辑清晰，提出了‘合作、学习、适应’的相处之道，展现了中学生成熟的理性思维。" },
+                { name: "何政泽", school: "上海市实验学校附属光明学校", file: "上海市实验学校附属光明学校 何政泽.jpeg", praise: "机械臂与人手的紧握极具象征意义，结合火箭与高铁元素，寓意科技与人类携手共创中国速度。" },
+                { name: "章新承", school: "上海市浦东新区林苑小学", file: "上海市浦东新区林苑小学 章新承.jpg", praise: "给AI‘豆包’吹奏《友谊地久天长》的故事太动人了！让冰冷的科技充满了温情，创意满分。" },
+                { name: "刘嘉琪", school: "上海市敬业中学", file: "上海市敬业中学 刘嘉琪.jpg", praise: "设计感堪比专业海报！在技术浪潮中呼吁‘思守本心’，体现了深厚的人文情怀与哲学思考。" },
+                { name: "陈辰娜", school: "上海市实验学校南校", file: "上海市实验学校南校 陈辰娜.jpg", praise: "手绘排版清新可爱，提出了‘让AI计算，让人类思考’的相处之道，对技术边界的认知非常清晰。" },
+                { name: "范逸琦", school: "苏州市吴江区苏州湾外国语学校", file: "苏州市吴江区苏州湾外国语学校 范逸琦.png", praise: "极具未来感的视觉设计！将AI比作‘镜中人’，深刻探讨了在数据洪流中如何守住‘内心温柔净土’的哲学命题。" },
+                { name: "张珈浩", school: "上海市同济初级中学", file: "上海市同济初级中学 张珈浩.jpg", praise: "蓝色科技风排版专业严谨，不仅科普了AI原理，更强调了‘坚守价值底线’的重要性，体现了极高的社会责任感。" },
+                { name: "张哲睿", school: "上海市同济初级中学", file: "上海市同济初级中学 张哲睿.jpg", praise: "以时间轴梳理了国产AI芯片的崛起之路，将科技发展与国家硬实力紧密结合，数据详实，令人振奋。" },
+                { name: "荆璎", school: "上海市同济初级中学", file: "上海市同济初级中学 荆璎.jpg", praise: "生动讲述了从‘指令模糊’到‘精准协作’的成长故事，深刻领悟了‘AI是增强人类能力的伙伴’这一核心真谛。" },
+                { name: "尤雅婷", school: "上海市同济初级中学", file: "上海市同济初级中学 尤雅婷.jpg", praise: "行动力满分！不仅畅想未来，更提出了‘尝试、记录、思考’的具体实践方案，是知行合一的优秀榜样。" }
+            ]
+        },
+30: {
+            title: "主题30 2025年，新闻大盘点（下）",
+            works: [
+                { name: "王语鑫", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 王语鑫.jpg", praise: "关键词提取非常精准！将国际关系比作“连续剧”的视角生动有趣，对AI“双刃剑”的思考展现了超越同龄人的成熟。" },
+                { name: "沈金莀", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 沈金莀.jpg", praise: "版面色彩明快，用“第一季、第二季”梳理国际局势条理清晰，大大的“和平”二字道出了全世界共同的心声。" },
+                { name: "戚博源", school: "上海市七宝外国语小学", file: "上海市七宝外国语小学 戚博源2.png", praise: "画面温馨治愈，“互助小队”的创意非常棒！生动诠释了在地球村中，各国人民应当手拉手、心连心，共创美好未来。" },
+                { name: "俞艺晨", school: "上海市金山区第二实验小学", file: "上海市金山区第二实验小学 俞艺晨.jpg", praise: "结合具体的新闻案例进行分析，观点更有说服力！字里行间流露出对世界和平的真挚渴望，令人动容。" }
+            ]
+        }
+    };
+
+    // ==========================================
+    // 2. 六大板块配置
+    // ==========================================
+    const sectionsConfig = [
+        {
+            id: "01", title: "风云变幻", en: "GLOBAL SHIFTS", sub: "解码全球“乱纪元”", desc: "冲突 · 博弈 · 秩序重组", icon: "🌏",
+            topicIds: [30, 3, 5, 9, 10, 11]
+        },
+        {
+            id: "02", title: "未来已来", en: "FUTURE TECH", sub: "直击科技“狂飙”现场", desc: "AI · 奇点 · 超级工程", icon: "🚀",
+            topicIds: [29, 1, 13, 18, 23, 25] 
+        },
+        {
+            id: "03", title: "大国脉动", en: "CHINA RISING", sub: "读懂中国的“硬实力”", desc: "战略 · 开放 · 时代强音", icon: "🇨🇳",
+            topicIds: [4, 6, 12, 26, 28] 
+        },
+        {
+            id: "04", title: "成长必修", en: "YOUTH & SOCIETY", sub: "透视热搜背后的真相", desc: "清醒 · 思辨 · 独立人格", icon: "🌱",
+            topicIds: [7, 8, 20, 21, 22] 
+        },
+        {
+            id: "05", title: "万象更新", en: "CULTURE POP", sub: "围观文体“名场面”", desc: "潮流 · 审美 · 榜样力量", icon: "🎨",
+            topicIds: [2, 14, 15, 24, 27] 
+        },
+        {
+            id: "06", title: "岁月回响", en: "HISTORY ECHOES", sub: "致敬历史的“脊梁”", desc: "铭记 · 精神 · 薪火相传", icon: "🕯️",
+            topicIds: [16, 17, 19] 
+        }
+    ];
+
+    // ==========================================
+    // 3. 全局状态
+    // ==========================================
+    let curWidx = 0;
+    let currentGalleryList = []; // 新增：当前展示的所有作品列表（跨话题）
+
+    // 基础切换
+    function toggle(id) {
+        document.getElementById('entrance-page').style.display = 'none';
+        document.getElementById('themes-page').style.display = 'none';
+        document.getElementById('detail-page').style.display = 'none';
+        const el = document.getElementById(id);
+        el.style.display = (id === 'entrance-page' ? 'flex' : 'block');
+        window.scrollTo(0, 0);
+    }
+
+    function showEntrance() { toggle('entrance-page'); }
+    
+    function showThemes() { 
+        toggle('themes-page');
+        renderSections();
+        // 重置导航文字
+        document.querySelector('.new-header .main').innerText = "作品展";
+        document.querySelector('.new-header button').innerText = "← 返回首页";
+        document.querySelector('.new-header button').onclick = showEntrance;
+    }
+
+    // ==========================================
+    // 4. 渲染板块 & 显示作品逻辑
+    // ==========================================
+    function renderSections() {
+        const grid = document.getElementById('themes-container');
+        grid.innerHTML = "";
+        
+        sectionsConfig.forEach(section => {
+            const div = document.createElement('div');
+            div.className = 'theme-card-new';
+            // 核心修改：点击直接显示该板块下所有作品
+            div.onclick = () => showSectionWorks(section); 
+            
+            div.innerHTML = `
+                <div class="card-top">
+                    <div style="display:flex; gap:10px;">
+                        <div class="icon-box">${section.icon}</div>
+                        <div class="card-meta">
+                            <span class="en-title">${section.en}</span>
+                            <span class="section-tag">SECTION</span>
+                        </div>
+                    </div>
+                    <div class="card-number">${section.id}</div>
+                </div>
+                <div class="card-content">
+                    <h2>${section.title}</h2>
+                    <div class="deco-line"></div>
+                    <p class="sub-title">${section.sub}</p>
+                    <p class="desc">${section.desc}</p>
+                </div>
+                <div class="hover-arrow">➝</div>
+            `;
+            grid.appendChild(div);
+        });
+    }
+
+    // 核心函数：点击板块，聚合展示所有作品
+    function showSectionWorks(section) {
+        currentGalleryList = []; // 清空当前列表
+
+        // 1. 遍历该板块下的所有话题ID
+        section.topicIds.forEach(tid => {
+            const topicData = allThemesData[tid];
+            if (topicData && topicData.works) {
+                // 2. 将作品加入列表，并标记来源话题
+                const labeledWorks = topicData.works.map(work => ({
+                    ...work,
+                    originTopic: topicData.title // 记录作品属于哪个话题
+                }));
+                currentGalleryList = currentGalleryList.concat(labeledWorks);
+            }
+        });
+
+        // 3. 切换页面
+        toggle('detail-page');
+        
+        // 4. 设置标题和返回按钮
+        document.getElementById('theme-title').innerText = section.title + " · 精选作品";
+        document.querySelector('#detail-page button').onclick = showThemes; // 返回大板块列表
+
+        // 5. 渲染作品网格
+        const container = document.getElementById('works-container');
+        container.innerHTML = currentGalleryList.map((item, index) => `
+            <div class="work-box" onclick="openGallery(${index})">
+                <div class="img-wrap"><img src="${item.file}" onerror="if(this.src.indexOf('.jpg.jpg')==-1)this.src+='.jpg'"></div>
+                <div style="padding:10px;">
+                    <!-- 新增：显示来源话题的小标题 -->
+                    <div style="font-size:0.75rem; color:#90a4ae; margin-bottom:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                        📌 ${item.originTopic.split(' ')[1] || item.originTopic}
+                    </div>
+                    <div style="color:var(--brand-blue); font-size:0.85rem;">${item.school}</div>
+                    <div style="font-weight:bold; font-size:1.1rem; margin-top:2px;">${item.name}</div>
+                </div>
+                <div class="praise-box">🌟 ${item.praise}</div>
+            </div>`).join('');
+    }
+
+    // ==========================================
+    // 5. 弹窗逻辑 (修改为使用 currentGalleryList)
+    // ==========================================
+    function updateGalleryContent() {
+        const item = currentGalleryList[curWidx]; // 改用全局列表
+        const img = document.getElementById('galleryImg');
+        img.src = item.file;
+        img.onerror = function() { if(this.src.indexOf('.jpg.jpg')==-1) this.src+='.jpg'; };
+        document.getElementById('gallery-school').innerText = item.school;
+        document.getElementById('gallery-name').innerText = item.name + " (" + (item.originTopic.split(' ')[1] || "精选作品") + ")";
+        document.getElementById('gallery-praise').innerText = "“" + item.praise + "”";
+    }
+
+    function openGallery(idx) {
+        curWidx = idx;
+        updateGalleryContent();
+        document.getElementById('galleryModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function changeGallery(dir) {
+        const total = currentGalleryList.length; // 改用全局列表长度
+        curWidx = (curWidx + dir + total) % total;
+        updateGalleryContent();
+    }
+    
+    function closeGallery() { 
+        document.getElementById('galleryModal').style.display = 'none'; 
+        document.body.style.overflow = 'auto'; 
+    }
+
+    // 初始化运行
+    showEntrance();
+</script>
+</body>
+</html>
